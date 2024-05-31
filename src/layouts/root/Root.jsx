@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
 
-const Authentication = () => {
+const Root = () => {
   return (
     <div>
-      <h2>authentication</h2>
+      <h2>this is root</h2>
       <Outlet />
     </div>
   );
 };
 
-export default Authentication;
+export default Root;
