@@ -7,11 +7,7 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { BiUserPlus } from "react-icons/bi";
 import imgHolder from "../../../../assets/icons/image-placeholder.jpg";
 import { Link } from "react-router-dom";
-import usePublicClient from "../../../../hooks/usePublicClient";
-
-const imgBB_url = `https://api.imgbb.com/1/upload?key=${
-  import.meta.env.VITE_IMGBB_KEY
-}`;
+import imgBB from "../../../../utils/imgBB";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,7 +16,6 @@ const Register = () => {
   const [isShowPass, setIsShowPass] = useState(false);
   const [image, setImage] = useState("");
   const { register, handleSubmit } = useForm();
-  const publicClient = usePublicClient();
 
   const handleFormSubmit = handleSubmit(({ email, password, image, name }) => {
     if (!/[A-Z]/.test(password)) {
@@ -30,11 +25,8 @@ const Register = () => {
     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
       toast.error("Must have a special character in the password");
     } else {
-      const imgBBFormData = new FormData();
-      imgBBFormData.append("image", image[0]);
-      publicClient.post(imgBB_url, imgBBFormData).then(({ data }) => {
-        const imgUrl = data.data.display_url;
-        createUser({ email, password, image: imgUrl, name }, () => {
+      imgBB(image[0], (url) => {
+        createUser({ email, password, image: url, name }, () => {
           toast.success("Account created successfully");
           navigate(location?.state ?? "/");
         });
