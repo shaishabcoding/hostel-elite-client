@@ -7,10 +7,8 @@ import {
   updateProfile,
 } from "firebase/auth";
 import auth from "../../firebase/firebase.init";
-import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import { GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
-import axios from "axios";
 
 export const AuthContext = createContext(null);
 
@@ -26,11 +24,7 @@ const AuthProvider = ({ children }) => {
         displayName: name,
         photoURL: image,
       }).then(() => {
-        axios.post("http://localhost:5000/jwt", { email }).then(({ data }) => {
-          if (data.success) {
-            callback && callback(user);
-          }
-        });
+        callback && callback(user);
       });
     });
   };
@@ -38,11 +32,7 @@ const AuthProvider = ({ children }) => {
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        axios.post("http://localhost:5000/jwt", { email }).then(({ data }) => {
-          if (data.success) {
-            callback && callback(user);
-          }
-        });
+        callback && callback(user);
       })
       .catch(() => {
         toast.error("Invalid email or password");
@@ -52,9 +42,7 @@ const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
       auth.signOut().then(() => {
-        axios.post("http://localhost:5000/logout").then(() => {
-          toast.success("logout successfully");
-        });
+        localStorage.removeItem("access-token");
       });
     } catch (err) {
       toast.error(err);
@@ -70,13 +58,7 @@ const AuthProvider = ({ children }) => {
   const signUp = (provider, callback = null) => {
     signInWithPopup(auth, provider)
       .then(({ user }) => {
-        axios
-          .post("http://localhost:5000/jwt", { email: user.email })
-          .then(({ data }) => {
-            if (data.success) {
-              callback && callback(user);
-            }
-          });
+        callback && callback(user);
       })
       .catch(({ message }) => {
         toast.error(message);
@@ -90,6 +72,9 @@ const AuthProvider = ({ children }) => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setIsLoading(false);
+      if (user) {
+        console.log(user);
+      }
     });
     return () => {
       unSubscribe();
@@ -110,7 +95,5 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
 };
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+
 export default AuthProvider;
