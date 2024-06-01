@@ -78,7 +78,7 @@ const Register = () => {
               setImage(URL.createObjectURL(e.target.files[0]));
             },
           })}
-          className="file-input file-input-bordered w-full border-gray-300 file:bg-gray-50 file:text-gray-600 file:border-0 dark:bg-gray-500 dark:border-gray-400"
+          className="file-input file-input-bordered w-full dark:file:bg-gray-400 dark:file:text-white border-gray-300 file:bg-gray-50 file:text-gray-600 file:border-0 dark:bg-gray-500 dark:border-gray-400"
         />
         <label className="input input-bordered flex items-center gap-2 dark:bg-gray-500 dark:border-gray-400">
           <svg
