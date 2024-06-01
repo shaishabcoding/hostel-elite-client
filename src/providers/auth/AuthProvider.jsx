@@ -9,6 +9,7 @@ import {
 import auth from "../../firebase/firebase.init";
 import { toast } from "react-toastify";
 import { GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+import usePublicClient from "../../hooks/usePublicClient";
 
 export const AuthContext = createContext(null);
 
@@ -17,6 +18,8 @@ const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
+  const publicClient = usePublicClient();
+
   const createUser = ({ email, password, name, image }, callback = null) => {
     setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password).then(({ user }) => {
@@ -24,7 +27,18 @@ const AuthProvider = ({ children }) => {
         displayName: name,
         photoURL: image,
       }).then(() => {
-        callback && callback(user);
+        publicClient
+          .post("/users", {
+            email: user?.email,
+            name: user?.displayName,
+            image: user?.photoURL,
+            badge: "bronze",
+          })
+          .then(({ data }) => {
+            if (data.success) {
+              callback && callback(user);
+            }
+          });
       });
     });
   };
@@ -58,7 +72,18 @@ const AuthProvider = ({ children }) => {
   const signUp = (provider, callback = null) => {
     signInWithPopup(auth, provider)
       .then(({ user }) => {
-        callback && callback(user);
+        publicClient
+          .post("/users", {
+            email: user?.email,
+            name: user?.displayName,
+            image: user?.photoURL,
+            badge: "bronze",
+          })
+          .then(({ data }) => {
+            if (data.success) {
+              callback && callback(user);
+            }
+          });
       })
       .catch(({ message }) => {
         toast.error(message);
@@ -73,7 +98,14 @@ const AuthProvider = ({ children }) => {
       setUser(user);
       setIsLoading(false);
       if (user) {
-        console.log(user);
+        const userInfo = { email: user?.email };
+        publicClient.post("/jwt", userInfo).then(({ data }) => {
+          if (data?.token) {
+            localStorage.setItem("access-token", data.token);
+          }
+        });
+      } else {
+        localStorage.removeItem("access-token");
       }
     });
     return () => {
