@@ -5,6 +5,9 @@ import Register from "../pages/root/authentication/pages/Register";
 import Root from "../layouts/root/Root";
 import Home from "../pages/root/home/Home";
 import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
+import Dashboard from "../layouts/dashboard/Dashboard";
+import AddMeal from "../pages/meals/AddMeal";
 
 const router = createBrowserRouter([
   {
@@ -13,11 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        ),
+        element: <Home />,
       },
       {
         path: "authentication",
@@ -32,6 +31,25 @@ const router = createBrowserRouter([
             element: <Register />,
           },
         ],
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
+    children: [
+      // admin dashboard
+      {
+        path: "meals/new",
+        element: (
+          <AdminRoute>
+            <AddMeal />
+          </AdminRoute>
+        ),
       },
     ],
   },
