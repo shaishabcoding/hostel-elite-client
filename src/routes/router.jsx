@@ -4,6 +4,7 @@ import Login from "../pages/root/authentication/pages/Login";
 import Register from "../pages/root/authentication/pages/Register";
 import Root from "../layouts/root/Root";
 import Home from "../pages/root/home/Home";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +13,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: (
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        ),
       },
       {
         path: "authentication",
