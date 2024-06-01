@@ -17,22 +17,23 @@ const Register = () => {
   const [image, setImage] = useState("");
   const { register, handleSubmit } = useForm();
 
-  const handleFormSubmit = handleSubmit(({ email, password, image, name }) => {
-    if (!/[A-Z]/.test(password)) {
-      toast.error("Must have an Uppercase letter in the password");
-    } else if (!/[a-z]/.test(password)) {
-      toast.error("Must have a Lowercase letter in the password");
-    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      toast.error("Must have a special character in the password");
-    } else {
-      imgBB(image[0], (url) => {
+  const handleFormSubmit = handleSubmit(
+    async ({ email, password, image, name }) => {
+      if (!/[A-Z]/.test(password)) {
+        toast.error("Must have an Uppercase letter in the password");
+      } else if (!/[a-z]/.test(password)) {
+        toast.error("Must have a Lowercase letter in the password");
+      } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        toast.error("Must have a special character in the password");
+      } else {
+        const url = await imgBB(image[0]);
         createUser({ email, password, image: url, name }, () => {
           toast.success("Account created successfully");
           navigate(location?.state ?? "/");
         });
-      });
+      }
     }
-  });
+  );
 
   return (
     <div>

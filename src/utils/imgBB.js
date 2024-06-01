@@ -5,20 +5,22 @@ const imgBB_url = `https://api.imgbb.com/1/upload?key=${
 }`;
 
 /**
- * Uploads an image to imgBB and calls the callback with the image URL.
+ * Uploads an image to imgBB and returns the URL of the uploaded image.
  *
- * @param {File} image - The image file to upload.
- * @param {Function} callback - The callback function to execute with the image URL.
+ * @param {File} image - The image file to be uploaded.
+ * @returns {Promise<string>} - A promise that resolves to the URL of the uploaded image.
+ * @throws {Error} - Throws an error if the upload fails.
  */
-const imgBB = (image, callback) => {
+const imgBB = async (image) => {
   const imgBBFormData = new FormData();
   imgBBFormData.append("image", image);
-  axios
-    .post(imgBB_url, imgBBFormData)
-    .then(({ data }) => {
-      callback(data.data.display_url);
-    })
-    .catch(console.dir);
+
+  try {
+    const res = await axios.post(imgBB_url, imgBBFormData);
+    return res.data.data.display_url;
+  } catch (error) {
+    throw new Error("Image upload failed: " + error.message);
+  }
 };
 
 export default imgBB;

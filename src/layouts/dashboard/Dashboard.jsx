@@ -14,10 +14,10 @@ const Dashboard = () => {
   const links = isAdmin ? (
     <ul className="menu menu-sm lg:menu-md">
       <li>
-        <NavLink to="/dashboard/meals/all">Admin Profile</NavLink>
+        <NavLink to="/dashboard/meals/all2">Admin Profile</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all">Manage Users</NavLink>
+        <NavLink to="/dashboard/meals/all2">Manage Users</NavLink>
       </li>
       <li>
         <NavLink to="/dashboard/meals/new">Add Meal</NavLink>
@@ -26,28 +26,28 @@ const Dashboard = () => {
         <NavLink to="/dashboard/meals/all">All Meals</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all">All Reviews</NavLink>
+        <NavLink to="/dashboard/meals/all2">All Reviews</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all">Serve Meals</NavLink>
+        <NavLink to="/dashboard/meals/all2">Serve Meals</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all">Upcoming Meals</NavLink>
+        <NavLink to="/dashboard/meals/all2">Upcoming Meals</NavLink>
       </li>
     </ul>
   ) : (
     <ul className="menu menu-sm lg:menu-md">
       <li>
-        <NavLink to="/dashboard/meals/all">My Profile</NavLink>
+        <NavLink to="/dashboard/meals/all2">My Profile</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all">Requested Meals</NavLink>
+        <NavLink to="/dashboard/meals/all2">Requested Meals</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all">My Reviews</NavLink>
+        <NavLink to="/dashboard/meals/all2">My Reviews</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all">Payment History</NavLink>
+        <NavLink to="/dashboard/meals/all2">Payment History</NavLink>
       </li>
     </ul>
   );

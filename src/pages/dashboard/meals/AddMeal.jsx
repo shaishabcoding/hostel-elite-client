@@ -29,21 +29,21 @@ const AddMeal = () => {
     },
   });
 
-  const handleFormSubmit = handleSubmit((meal) => {
+  const handleFormSubmit = handleSubmit(async (meal) => {
     meal.rating = rating;
-    imgBB(meal.image[0], (url) => {
-      meal.image = url;
-      privateClient.post("/meals", meal).then(({ data }) => {
-        if (data.insertedId) {
-          reset();
-          Swal.fire({
-            title: "Success",
-            text: "New meal insert successfully!",
-            icon: "success",
-            confirmButtonText: "Done",
-          });
-        }
-      });
+    meal.reviews = [meal.reviews];
+    const url = await imgBB(meal.image[0]);
+    meal.image = url;
+    privateClient.post("/meals", meal).then(({ data }) => {
+      if (data.insertedId) {
+        reset();
+        Swal.fire({
+          title: "Success",
+          text: "New meal insert successfully!",
+          icon: "success",
+          confirmButtonText: "Done",
+        });
+      }
     });
   });
   return (
