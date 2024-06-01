@@ -7,7 +7,7 @@ import Home from "../pages/root/home/Home";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import Dashboard from "../layouts/dashboard/Dashboard";
-import AddMeal from "../pages/meals/AddMeal";
+import AddMeal from "../pages/dashboard/meals/AddMeal";
 
 const router = createBrowserRouter([
   {

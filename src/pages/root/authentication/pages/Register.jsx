@@ -37,7 +37,7 @@ const Register = () => {
   return (
     <div>
       <h2 className="text-2xl lg:mt-8 lg:text-5xl lg:mb-12 font-semibold text-center mb-6">
-        Get Started
+        Let's Get Started
       </h2>
       <img
         src={image ? image : imgHolder}

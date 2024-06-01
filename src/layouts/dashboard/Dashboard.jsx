@@ -36,7 +36,7 @@ const Dashboard = () => {
       </li>
     </ul>
   ) : (
-    <ul className="">
+    <ul className="menu menu-sm lg:menu-md">
       <li>
         <NavLink to="/dashboard/meals/all">My Profile</NavLink>
       </li>
@@ -57,14 +57,20 @@ const Dashboard = () => {
       <div className="md:hidden">
         <Navbar links={links} />
       </div>
-      <div className="lg:px-28 h-screen flex flex-row lg:py-6">
+      <div className="lg:px-28 md:h-screen flex flex-row lg:py-6 lg:gap-6">
         {/* <Navbar></Navbar>
         {loading && <Loading></Loading>}
         <Outlet></Outlet> */}
-        <div className="hidden md:block bg-gradient-to-br from-green-50  dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500 h-full rounded-lg">
+        <div className="w-96 md:w-72 hidden md:block bg-gradient-to-br from-green-50  dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500 h-full lg:rounded-lg">
           <SideBar links={links} />
         </div>
-        <Outlet className="grow" />
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className="h-full w-full md:overflow-auto p-2 lg:p-0">
+            <Outlet className="grow" />
+          </div>
+        )}
       </div>
       {/* <Footer></Footer> */}
     </div>

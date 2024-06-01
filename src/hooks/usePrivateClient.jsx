@@ -23,10 +23,10 @@ const usePrivateClient = () => {
     (response) => response,
     async (error) => {
       const status = error.response.status;
-      // if (status === 401 || status === 403) {
-      //   await logOut();
-      //   navigate("/authentication/login");
-      // }
+      if (status === 401 || status === 403) {
+        await logOut();
+        navigate("/authentication/login");
+      }
       return Promise.reject(error);
     }
   );
