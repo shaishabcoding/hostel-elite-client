@@ -9,6 +9,7 @@ import AdminRoute from "./AdminRoute";
 import Dashboard from "../layouts/dashboard/Dashboard";
 import AddMeal from "../pages/dashboard/meals/AddMeal";
 import AllMeals from "../pages/dashboard/meals/AllMeals";
+import UpdateMeal from "../pages/dashboard/meals/UpdateMeal";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AddMeal />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "meals/edit/:id",
+        element: (
+          <AdminRoute>
+            <UpdateMeal />
           </AdminRoute>
         ),
       },

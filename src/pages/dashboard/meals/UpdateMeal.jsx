@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import useAuth from "../../../hooks/useAuth";
+import useMeal from "../../../hooks/useMeal";
 import usePrivateClient from "../../../hooks/usePrivateClient";
 import imgBB from "../../../utils/imgBB";
 import {
@@ -10,41 +10,50 @@ import {
 import { useState } from "react";
 import Rating from "react-rating";
 import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
-const AddMeal = () => {
-  const { user } = useAuth();
+const UpdateMeal = () => {
   const [imgTitle, setImgTitle] = useState(null);
   const [rating, setRating] = useState(3);
   const privateClient = usePrivateClient();
+  const { id } = useParams();
+  const [meal, refetch] = useMeal(id);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
-    defaultValues: {
-      email: user?.email,
-      username: user?.displayName,
-    },
-  });
+  } = useForm();
 
-  const handleFormSubmit = handleSubmit(async (meal) => {
-    meal.rating = rating;
-    meal.reviews = [
-      {
-        email: user.email,
-        review: meal.reviews,
-      },
-    ];
-    const url = await imgBB(meal.image[0]);
-    meal.image = url;
-    privateClient.post("/meals", meal).then(({ data }) => {
-      if (data.insertedId) {
-        reset();
+  useEffect(() => {
+    if (meal) {
+      reset(meal);
+      setImgTitle(meal.image ? meal.image.split("/").pop() : "");
+      setRating(meal.rating || 0);
+    }
+  }, [meal, reset]);
+
+  const handleFormSubmit = handleSubmit(async (newMeal) => {
+    newMeal.rating = rating;
+    if (newMeal.image instanceof FileList && newMeal.image.length > 0) {
+      const url = await imgBB(newMeal.image[0]);
+      newMeal.image = url;
+    } else if (
+      newMeal.image instanceof FileList &&
+      newMeal.image.length === 0
+    ) {
+      newMeal.image = meal.image;
+    }
+    console.log(newMeal);
+    privateClient.put(`/meals/${id}`, newMeal).then(({ data }) => {
+      console.log(data);
+      if (data.modifiedCount > 0) {
+        refetch();
         Swal.fire({
           title: "Success",
-          text: "New meal insert successfully!",
+          text: "Meal Update successfully!",
           icon: "success",
           confirmButtonText: "Done",
         });
@@ -54,7 +63,7 @@ const AddMeal = () => {
   return (
     <div className="w-full lg:p-6 pt-6 px-2 pb-2 lg:mx-0 rounded-lg border bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
       <h2 className="text-2xl lg:mt-0 lg:mb-12 lg:text-5xl font-semibold text-center mb-6">
-        New Meal
+        Update Meal
       </h2>
       <div className="w-full lg:px-12 mx-auto">
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -75,9 +84,8 @@ const AddMeal = () => {
                   type="file"
                   accept="image/*"
                   {...register("image", {
-                    required: "Please upload an image",
                     onChange: (e) => {
-                      setImgTitle(e.target.files[0].name);
+                      setImgTitle(e.target.files[0]?.name);
                     },
                   })}
                   className="hidden"
@@ -244,7 +252,8 @@ const AddMeal = () => {
               />
             </label>
           </div>
-          <div>
+          {/* remove change review after it create */}
+          {/* <div>
             <label
               className={`input mt-4 input-bordered flex items-center gap-2 dark:bg-gray-500 dark:border-gray-400 ${
                 errors.reviews ? "border-red-500" : ""
@@ -261,7 +270,7 @@ const AddMeal = () => {
             {errors.reviews && (
               <p className="text-red-500">{errors.reviews.message}</p>
             )}
-          </div>
+          </div> */}
           <div>
             <textarea
               {...register("description", {
@@ -277,7 +286,7 @@ const AddMeal = () => {
             )}
           </div>
           <button className="btn btn-primary w-full" type="submit">
-            Create <MdOutlineDriveFileRenameOutline />
+            Update <MdOutlineDriveFileRenameOutline />
           </button>
         </form>
       </div>
@@ -285,4 +294,4 @@ const AddMeal = () => {
   );
 };
 
-export default AddMeal;
+export default UpdateMeal;

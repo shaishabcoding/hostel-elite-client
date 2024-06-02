@@ -6,10 +6,9 @@ import { TbListDetails } from "react-icons/tb";
 import usePrivateClient from "../../../hooks/usePrivateClient";
 import Swal from "sweetalert2";
 const AllMeals = () => {
-  const [meals] = useMeals();
+  const [meals, refetch] = useMeals();
   const privateClient = usePrivateClient();
-  const [, refetch] = useMeals();
-
+  console.log(meals);
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -61,15 +60,20 @@ const AllMeals = () => {
                 </th>
                 <td>{title}</td>
                 <td>{likes}</td>
-                <td>{reviews.length}</td>
+                <td>{reviews?.length}</td>
                 <td>{username}</td>
                 <td className="flex gap-2 w-fit">
-                  <button
-                    title="update"
-                    className="btn text-white btn-info btn-xs md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
+                  <Link
+                    className="grid w-full"
+                    to={`/dashboard/meals/edit/${_id}`}
                   >
-                    <BiSolidEdit />
-                  </button>
+                    <button
+                      title="update"
+                      className="btn text-white btn-info btn-xs md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
+                    >
+                      <BiSolidEdit />
+                    </button>
+                  </Link>
                   <button
                     onClick={() => handleDelete(_id)}
                     title="delete"
