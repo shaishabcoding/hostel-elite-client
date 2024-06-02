@@ -10,12 +10,14 @@ import {
 import { useState } from "react";
 import Rating from "react-rating";
 import Swal from "sweetalert2";
+import Loading from "../../../components/Loading";
 
 const AddMeal = () => {
   const { user } = useAuth();
   const [imgTitle, setImgTitle] = useState(null);
   const [rating, setRating] = useState(3);
   const privateClient = usePrivateClient();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -30,6 +32,7 @@ const AddMeal = () => {
   });
 
   const handleFormSubmit = handleSubmit(async (meal) => {
+    setLoading(true);
     meal.rating = rating;
     meal.reviews = [
       {
@@ -39,17 +42,17 @@ const AddMeal = () => {
     ];
     const url = await imgBB(meal.image[0]);
     meal.image = url;
-    privateClient.post("/meals", meal).then(({ data }) => {
-      if (data.insertedId) {
-        reset();
-        Swal.fire({
-          title: "Success",
-          text: "New meal insert successfully!",
-          icon: "success",
-          confirmButtonText: "Done",
-        });
-      }
-    });
+    const res = await privateClient.post("/meals", meal);
+    if (res.data.insertedId) {
+      reset();
+      Swal.fire({
+        title: "Success",
+        text: "New meal insert successfully!",
+        icon: "success",
+        confirmButtonText: "Done",
+      });
+    }
+    setLoading(false);
   });
   return (
     <div className="w-full lg:p-6 pt-6 px-2 pb-2 lg:mx-0 rounded-lg border bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
@@ -276,8 +279,18 @@ const AddMeal = () => {
               <p className="text-red-500">{errors.description.message}</p>
             )}
           </div>
-          <button className="btn btn-primary w-full" type="submit">
-            Create <MdOutlineDriveFileRenameOutline />
+          <button
+            disabled={loading}
+            className="btn btn-primary w-full"
+            type="submit"
+          >
+            {loading ? (
+              <Loading className="my-0 text-primary" />
+            ) : (
+              <>
+                Create <MdOutlineDriveFileRenameOutline />
+              </>
+            )}
           </button>
         </form>
       </div>

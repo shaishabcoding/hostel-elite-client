@@ -12,6 +12,7 @@ import Rating from "react-rating";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import Loading from "../../../components/Loading";
 
 const UpdateMeal = () => {
   const [imgTitle, setImgTitle] = useState(null);
@@ -19,6 +20,7 @@ const UpdateMeal = () => {
   const privateClient = usePrivateClient();
   const { id } = useParams();
   const [meal, refetch] = useMeal(id);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -36,6 +38,7 @@ const UpdateMeal = () => {
   }, [meal, reset]);
 
   const handleFormSubmit = handleSubmit(async (newMeal) => {
+    setLoading(true);
     newMeal.rating = rating;
     if (newMeal.image instanceof FileList && newMeal.image.length > 0) {
       const url = await imgBB(newMeal.image[0]);
@@ -47,18 +50,17 @@ const UpdateMeal = () => {
       newMeal.image = meal.image;
     }
     console.log(newMeal);
-    privateClient.put(`/meals/${id}`, newMeal).then(({ data }) => {
-      console.log(data);
-      if (data.modifiedCount > 0) {
-        refetch();
-        Swal.fire({
-          title: "Success",
-          text: "Meal Update successfully!",
-          icon: "success",
-          confirmButtonText: "Done",
-        });
-      }
-    });
+    const res = await privateClient.put(`/meals/${id}`, newMeal);
+    if (res.data.modifiedCount > 0) {
+      refetch();
+      Swal.fire({
+        title: "Success",
+        text: "Meal Update successfully!",
+        icon: "success",
+        confirmButtonText: "Done",
+      });
+    }
+    setLoading(false);
   });
   return (
     <div className="w-full lg:p-6 pt-6 px-2 pb-2 lg:mx-0 rounded-lg border bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
@@ -285,8 +287,18 @@ const UpdateMeal = () => {
               <p className="text-red-500">{errors.description.message}</p>
             )}
           </div>
-          <button className="btn btn-primary w-full" type="submit">
-            Update <MdOutlineDriveFileRenameOutline />
+          <button
+            disabled={loading}
+            className="btn btn-primary w-full"
+            type="submit"
+          >
+            {loading ? (
+              <Loading className="my-0 text-primary" />
+            ) : (
+              <>
+                Update <MdOutlineDriveFileRenameOutline />
+              </>
+            )}
           </button>
         </form>
       </div>

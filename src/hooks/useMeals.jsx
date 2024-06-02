@@ -5,7 +5,7 @@ import usePrivateClient from "./usePrivateClient";
 const useMeals = () => {
   const { loading } = useAuth();
   const privateClient = usePrivateClient();
-  const { data, refetch } = useQuery({
+  const { data, refetch, isPending } = useQuery({
     queryKey: ["meals"],
     enabled: !loading,
     queryFn: async () => {
@@ -13,7 +13,7 @@ const useMeals = () => {
       return res.data;
     },
   });
-  return [data, refetch];
+  return [data, refetch, isPending];
 };
 
 export default useMeals;
