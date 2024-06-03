@@ -17,7 +17,7 @@ const Dashboard = () => {
         <NavLink to="/dashboard/meals/all2">Admin Profile</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all2">Manage Users</NavLink>
+        <NavLink to="/dashboard/users">Manage Users</NavLink>
       </li>
       <li>
         <NavLink to="/dashboard/meals/new">Add Meal</NavLink>
