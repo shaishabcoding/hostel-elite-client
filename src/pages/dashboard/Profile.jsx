@@ -9,7 +9,7 @@ const Profile = () => {
   if (!profile) {
     return <div>No profile data available.</div>;
   }
-  const { image, name, email, role, mealCount } = profile;
+  const { image, name, email, role, mealCount, badge } = profile;
   return (
     <div className="w-full lg:p-6 px-2 pb-2 lg:mx-0 ">
       <h2 className="text-2xl lg:mt-0 lg:mb-12 lg:text-5xl font-semibold text-center mb-6">
@@ -37,7 +37,7 @@ const Profile = () => {
           ) : (
             <>
               <h2 className="text-lg ">
-                <span className="font-bold">Role:</span> {role}
+                <span className="font-bold">Badge:</span> {badge}
               </h2>
             </>
           )}

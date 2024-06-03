@@ -96,16 +96,17 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
-      setIsLoading(false);
       if (user) {
         const userInfo = { email: user?.email };
         publicClient.post("/jwt", userInfo).then(({ data }) => {
           if (data?.token) {
             localStorage.setItem("access-token", data.token);
+            setIsLoading(false);
           }
         });
       } else {
         localStorage.removeItem("access-token");
+        setIsLoading(false);
       }
     });
     return () => {

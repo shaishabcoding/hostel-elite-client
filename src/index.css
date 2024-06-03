@@ -7,5 +7,5 @@
   @apply bg-white text-gray-700 font-semibold dark:bg-gray-300;
 }
 body {
-  @apply font-open-sans;
+  @apply font-open-sans select-none;
 }
