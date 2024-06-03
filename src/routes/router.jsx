@@ -7,11 +7,12 @@ import Home from "../pages/root/home/Home";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import Dashboard from "../layouts/dashboard/Dashboard";
-import AddMeal from "../pages/dashboard/meals/AddMeal";
-import AllMeals from "../pages/dashboard/meals/AllMeals";
-import UpdateMeal from "../pages/dashboard/meals/UpdateMeal";
-import AllReviews from "../pages/dashboard/meals/AllReviews";
-import ManageUsers from "../pages/dashboard/meals/ManageUsers";
+import AddMeal from "../pages/dashboard/admin/meals/AddMeal";
+import AllMeals from "../pages/dashboard/admin/meals/AllMeals";
+import UpdateMeal from "../pages/dashboard/admin/meals/UpdateMeal";
+import AllReviews from "../pages/dashboard/admin/AllReviews";
+import ManageUsers from "../pages/dashboard/admin/ManageUsers";
+import Profile from "../pages/dashboard/Profile";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,15 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      //user dashboard
+      {
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
+      },
       // admin dashboard
       {
         path: "meals/new",

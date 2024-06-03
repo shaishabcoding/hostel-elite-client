@@ -14,7 +14,7 @@ const Dashboard = () => {
   const links = isAdmin ? (
     <ul className="menu menu-sm lg:menu-md">
       <li>
-        <NavLink to="/dashboard/meals/all2">Admin Profile</NavLink>
+        <NavLink to="/dashboard/profile">Admin Profile</NavLink>
       </li>
       <li>
         <NavLink to="/dashboard/users">Manage Users</NavLink>
@@ -38,7 +38,7 @@ const Dashboard = () => {
   ) : (
     <ul className="menu menu-sm lg:menu-md">
       <li>
-        <NavLink to="/dashboard/meals/all2">My Profile</NavLink>
+        <NavLink to="/dashboard/profile">My Profile</NavLink>
       </li>
       <li>
         <NavLink to="/dashboard/meals/all2">Requested Meals</NavLink>
@@ -67,8 +67,10 @@ const Dashboard = () => {
         {loading ? (
           <Loading />
         ) : (
-          <div className="h-full w-full md:overflow-auto p-2 lg:p-0">
-            <Outlet className="grow" />
+          <div className="h-full w-full p-2 lg:p-0">
+            <div className="h-full w-full md:overflow-auto p-2 lg:p-6 pt-6 px-2 pb-2 lg:mx-0 rounded-lg border bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
+              <Outlet className="grow" />
+            </div>
           </div>
         )}
       </div>

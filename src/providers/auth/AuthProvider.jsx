@@ -111,7 +111,7 @@ const AuthProvider = ({ children }) => {
     return () => {
       unSubscribe();
     };
-  }, []);
+  }, [publicClient]);
   const authInfo = {
     user,
     createUser,

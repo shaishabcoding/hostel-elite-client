@@ -1,15 +1,13 @@
-import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import useMeals from "../../../hooks/useMeals";
-import { BiSolidEdit } from "react-icons/bi";
+import usePrivateClient from "../../../hooks/usePrivateClient";
+import Loading from "../../../components/Loading";
+import { Link } from "react-router-dom";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { TbListDetails } from "react-icons/tb";
-import usePrivateClient from "../../../hooks/usePrivateClient";
-import Swal from "sweetalert2";
-import Loading from "../../../components/Loading";
-import { useState } from "react";
-const AllMeals = () => {
-  const [sort, setSort] = useState("");
-  const [meals, refetch, loading] = useMeals(sort);
+
+const AllReviews = () => {
+  const [meals, refetch, loading] = useMeals();
   const privateClient = usePrivateClient();
   const handleDelete = (id) => {
     Swal.fire({
@@ -37,26 +35,10 @@ const AllMeals = () => {
     });
   };
   return (
-    <div className="lg:p-6 pt-6 px-2 pb-2 lg:mx-0 bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
-      <h2 className="text-2xl lg:mt-0 lg:mb-8 lg:text-5xl font-semibold text-center mb-4">
-        All Meals
+    <div className="w-full lg:p-6 px-2 pb-2 lg:mx-0">
+      <h2 className="text-2xl lg:mt-0 lg:mb-12 lg:text-5xl font-semibold text-center mb-6">
+        All reviews
       </h2>
-      <div className="flex items-center justify-center gap-4 mb-4 lg:mb-8">
-        <select
-          onChange={(e) => {
-            setSort(e.target.value);
-            refetch();
-          }}
-          defaultValue="default"
-          className="select bg-green-400 rounded-lg outline-none select-sm md:select-md text-white dark:bg-gray-700 dark:text-white dark:border-gray-400"
-        >
-          <option disabled value="default">
-            Sort
-          </option>
-          <option value="likes">Likes</option>
-          <option value="reviews">Reviews</option>
-        </select>
-      </div>
       <div className="overflow-x-auto rounded-md border">
         <table className="table table-xs md:table-md table-pin-rows table-pin-cols table-zebra bg-white">
           <thead>
@@ -64,8 +46,7 @@ const AllMeals = () => {
               <th></th>
               <td>Title</td>
               <td>Likes</td>
-              <td>Reviews</td>
-              <td>Distributor</td>
+              <td>Reviews Count</td>
               <td></td>
             </tr>
           </thead>
@@ -78,7 +59,7 @@ const AllMeals = () => {
               </tr>
             ) : (
               meals?.map((meal, idx) => {
-                const { _id, title, likes, reviews, username } = meal;
+                const { _id, title, likes, reviews } = meal;
                 return (
                   <tr
                     key={_id}
@@ -90,19 +71,7 @@ const AllMeals = () => {
                     <td>{title}</td>
                     <td>{likes}</td>
                     <td>{reviews?.length}</td>
-                    <td>{username}</td>
                     <td className="flex gap-2 w-fit">
-                      <Link
-                        className="grid w-full"
-                        to={`/dashboard/meals/edit/${_id}`}
-                      >
-                        <button
-                          title="update"
-                          className="btn text-white btn-info btn-xs md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
-                        >
-                          <BiSolidEdit />
-                        </button>
-                      </Link>
                       <button
                         onClick={() => handleDelete(_id)}
                         title="delete"
@@ -130,4 +99,4 @@ const AllMeals = () => {
   );
 };
 
-export default AllMeals;
+export default AllReviews;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import usePrivateClient from "../../../../hooks/usePrivateClient";
+import usePrivateClient from "../../../../../hooks/usePrivateClient";
 
 const Autocomplete = ({ onSelect }) => {
   const [query, setQuery] = useState("");
