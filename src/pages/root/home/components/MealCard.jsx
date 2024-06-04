@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const MealCard = ({ meal }) => {
   const { title, image, rating, price, _id, category } = meal;
   return (
-    <div className="rounded-lg h-full overflow-hidden flex flex-col border dark:border-gray-400 border-gray-200 shadow-sm">
+    <div className="rounded-lg h-full overflow-hidden flex flex-col border border-gray-200 shadow-sm bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
       <div className="relative border-b border-gray-400">
         <img src={image} className="w-full aspect-video bg-gray-200" />
         <div className="absolute top-3 right-3 flex gap-2">
@@ -15,7 +15,7 @@ const MealCard = ({ meal }) => {
           </p>
         </div>
       </div>
-      <div className="p-3 pb-5 bg-white dark:bg-gray-600 dark:text-white grow flex flex-col">
+      <div className="p-3 pb-5 dark:bg-gray-600 dark:text-white grow flex flex-col">
         <h2 className="text-2xl font-semibold">{title}</h2>
         <p>
           Rating :

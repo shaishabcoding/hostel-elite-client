@@ -14,6 +14,7 @@ import AllReviews from "../pages/dashboard/admin/AllReviews";
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import Profile from "../pages/dashboard/Profile";
 import MealDetails from "../pages/root/meals/MealDetails";
+import Checkout from "../pages/root/checkout/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -40,9 +41,13 @@ const router = createBrowserRouter([
       },
       {
         path: "meal/:id",
+        element: <MealDetails />,
+      },
+      {
+        path: "checkout/:badge",
         element: (
           <PrivateRoute>
-            <MealDetails />
+            <Checkout />
           </PrivateRoute>
         ),
       },

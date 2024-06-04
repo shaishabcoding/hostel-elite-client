@@ -10,7 +10,10 @@ const Categories = () => {
   const [dinnerMeal, , dinnerLoading] = useTabMeals("Dinner");
   const [allMeal, , allLoading] = useTabMeals("All");
   return (
-    <div className="p-2 lg:p-0 mb-4 lg:mb-10">
+    <div className="p-2 lg:p-0 mb-4 lg:my-20 mt-4">
+      <h2 className="text-2xl lg:mt-0 lg:mb-12 lg:text-5xl font-semibold text-center mb-6">
+        Categories
+      </h2>
       <Tabs>
         <TabList>
           <Tab>Breakfast</Tab>
