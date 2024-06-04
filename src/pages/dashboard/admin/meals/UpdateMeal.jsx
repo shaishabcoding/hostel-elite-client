@@ -13,8 +13,10 @@ import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Loading from "../../../../components/Loading";
+import useAuth from "../../../../hooks/useAuth";
 
 const UpdateMeal = () => {
+  const { user } = useAuth();
   const [imgTitle, setImgTitle] = useState(null);
   const [rating, setRating] = useState(3);
   const privateClient = usePrivateClient();
@@ -31,11 +33,12 @@ const UpdateMeal = () => {
 
   useEffect(() => {
     if (meal) {
+      meal.reviews = meal.reviews.find((r) => r.email === user.email).review;
       reset(meal);
       setImgTitle(meal.image ? meal.image.split("/").pop() : "");
       setRating(meal.rating || 0);
     }
-  }, [meal, reset]);
+  }, [meal, reset, user]);
 
   const handleFormSubmit = handleSubmit(async (newMeal) => {
     setLoading(true);
@@ -255,7 +258,7 @@ const UpdateMeal = () => {
             </label>
           </div>
           {/* remove change review after it create */}
-          {/* <div>
+          <div>
             <label
               className={`input mt-4 input-bordered flex items-center gap-2 dark:bg-gray-500 dark:border-gray-400 ${
                 errors.reviews ? "border-red-500" : ""
@@ -272,7 +275,7 @@ const UpdateMeal = () => {
             {errors.reviews && (
               <p className="text-red-500">{errors.reviews.message}</p>
             )}
-          </div> */}
+          </div>
           <div>
             <textarea
               {...register("description", {
