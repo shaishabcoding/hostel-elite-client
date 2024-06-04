@@ -11,10 +11,11 @@ import getRandomColor from "../../../utils/getRandomColor";
 
 const MealDetails = () => {
   const { id } = useParams();
-  const [meal, refetch, loading] = useMeal(id);
+  const [meal, , loading] = useMeal(id);
   if (loading || !meal) {
     return <Loading />;
   }
+  console.log(meal);
   const {
     image,
     title,
@@ -82,7 +83,7 @@ const MealDetails = () => {
                   modules={[Autoplay, EffectCards]}
                   className="w-full lg:w-[300px] drop-shadow-md"
                 >
-                  {reviews.map(({ email, review }, idx) => (
+                  {reviews?.map(({ email, review }, idx) => (
                     <SwiperSlide
                       key={idx}
                       style={{ backgroundColor: getRandomColor() }}

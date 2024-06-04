@@ -33,8 +33,14 @@ const UpdateMeal = () => {
 
   useEffect(() => {
     if (meal) {
-      meal.reviews = meal.reviews.find((r) => r.email === user.email).review;
-      reset(meal);
+      const newMeal = { ...meal };
+      if (Array.isArray(meal.reviews)) {
+        const userReview = meal.reviews.find((r) => r.email === user.email);
+        newMeal.reviews = userReview ? userReview.review : "";
+      } else {
+        newMeal.reviews = "";
+      }
+      reset(newMeal);
       setImgTitle(meal.image ? meal.image.split("/").pop() : "");
       setRating(meal.rating || 0);
     }
@@ -42,6 +48,8 @@ const UpdateMeal = () => {
 
   const handleFormSubmit = handleSubmit(async (newMeal) => {
     setLoading(true);
+    const review = newMeal.reviews;
+    delete newMeal.reviews;
     newMeal.rating = rating;
     if (newMeal.image instanceof FileList && newMeal.image.length > 0) {
       const url = await imgBB(newMeal.image[0]);
@@ -52,9 +60,9 @@ const UpdateMeal = () => {
     ) {
       newMeal.image = meal.image;
     }
-    console.log(newMeal);
     const res = await privateClient.put(`/meals/${id}`, newMeal);
-    if (res.data.modifiedCount > 0) {
+    const res2 = await privateClient.put(`/meals/${id}/review`, { review });
+    if (res.data.modifiedCount > 0 || res2.data.modifiedCount > 0) {
       refetch();
       Swal.fire({
         title: "Success",
