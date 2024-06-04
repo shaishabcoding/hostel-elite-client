@@ -20,7 +20,6 @@ const Banner = () => {
     <div className="hero min-h-screen my-1 lg:rounded-lg lg:mt-6 lg:mb-10 md:py-10 bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
       <div className="hero-content flex-col lg:flex-row-reverse lg:p-28 gap-4 lg:gap-20 overflow-hidden">
         <Swiper
-          data-aos="zoom-in"
           autoplay={{
             delay: 900,
             disableOnInteraction: false,

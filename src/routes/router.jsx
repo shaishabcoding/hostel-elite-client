@@ -13,6 +13,7 @@ import UpdateMeal from "../pages/dashboard/admin/meals/UpdateMeal";
 import AllReviews from "../pages/dashboard/admin/AllReviews";
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import Profile from "../pages/dashboard/Profile";
+import MealDetails from "../pages/root/meals/MealDetails";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
             element: <Register />,
           },
         ],
+      },
+      {
+        path: "meal/:id",
+        element: (
+          <PrivateRoute>
+            <MealDetails />
+          </PrivateRoute>
+        ),
       },
     ],
   },

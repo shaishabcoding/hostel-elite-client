@@ -39,6 +39,70 @@ const AddMeal = () => {
         email: user.email,
         review: meal.reviews,
       },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
+      {
+        email: user.email,
+        review: meal.reviews,
+      },
     ];
     const url = await imgBB(meal.image[0]);
     meal.image = url;
