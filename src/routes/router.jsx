@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <MealDetails />,
       },
       {
-        path: "checkout/:badge",
+        path: "checkout/:pkgName",
         element: (
           <PrivateRoute>
             <Checkout />
