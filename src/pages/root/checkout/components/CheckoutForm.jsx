@@ -121,7 +121,7 @@ const CheckoutForm = ({ clientSecret, pkg, profile }) => {
         <p className="text-error">{error}</p>
         {findPkg(profileUser?.badge) && (
           <p className="mt-4 flex gap-1">
-            Your are already
+            You are already
             <Link to={`/checkout/${profileUser?.badge}`} className="link">
               {profileUser?.badge}
             </Link>
