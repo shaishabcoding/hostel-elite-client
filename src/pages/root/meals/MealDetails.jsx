@@ -35,6 +35,8 @@ const MealDetails = () => {
     likes,
   } = meal;
 
+  console.log(meal);
+
   const handleLike = async () => {
     setLikeLoading(true);
     const res = await privateClient.put(`/meals/${id}/like`);

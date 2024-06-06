@@ -16,6 +16,7 @@ import Profile from "../pages/dashboard/Profile";
 import MealDetails from "../pages/root/meals/MealDetails";
 import Checkout from "../pages/root/checkout/Checkout";
 import PaymentHistory from "../pages/dashboard/user/PaymentHistory";
+import MyReviews from "../pages/dashboard/user/MyReviews";
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <PaymentHistory />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "reviews/my",
+        element: (
+          <PrivateRoute>
+            <MyReviews />
           </PrivateRoute>
         ),
       },
