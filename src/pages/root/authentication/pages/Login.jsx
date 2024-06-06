@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { FiLogIn } from "react-icons/fi";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import Loading from "../../../../components/Loading";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Login = () => {
   const { logIn } = useAuth();
   const [isShowPass, setIsShowPass] = useState(false);
   const { register, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = handleSubmit(({ email, password }) => {
     if (!/[A-Z]/.test(password)) {
@@ -20,9 +22,11 @@ const Login = () => {
     } else if (!/[a-z]/.test(password)) {
       toast.error("Must have a Lowercase letter in the password");
     } else {
+      setLoading(true);
       logIn({ email, password }, () => {
         toast.success("Account Logged in successfully");
         navigate(location?.state ?? "/");
+        setLoading(false);
       });
     }
   });
@@ -87,10 +91,17 @@ const Login = () => {
         </div>
         <div>
           <button
+            disabled={loading}
             type="submit"
             className="btn w-full btn-primary dark:bg-blue-800 dark:border-gray-400"
           >
-            Login <FiLogIn />
+            {loading ? (
+              <Loading className="my-0 text-primary" />
+            ) : (
+              <>
+                Login <FiLogIn />
+              </>
+            )}
           </button>
         </div>
       </form>

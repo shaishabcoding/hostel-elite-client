@@ -8,6 +8,7 @@ import { BiUserPlus } from "react-icons/bi";
 import imgHolder from "../../../../assets/icons/image-placeholder.jpg";
 import { Link } from "react-router-dom";
 import imgBB from "../../../../utils/imgBB";
+import Loading from "../../../../components/Loading";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Register = () => {
   const [isShowPass, setIsShowPass] = useState(false);
   const [image, setImage] = useState("");
   const { register, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = handleSubmit(
     async ({ email, password, image, name }) => {
@@ -26,10 +28,12 @@ const Register = () => {
       } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
         toast.error("Must have a special character in the password");
       } else {
+        setLoading(true);
         const url = await imgBB(image[0]);
         createUser({ email, password, image: url, name }, () => {
           toast.success("Account created successfully");
           navigate(location?.state ?? "/");
+          setLoading(false);
         });
       }
     }
@@ -127,10 +131,17 @@ const Register = () => {
         </div>
         <div>
           <button
+            disabled={loading}
             type="submit"
             className="btn w-full btn-primary dark:bg-blue-800 dark:border-gray-400"
           >
-            Register <BiUserPlus />
+            {loading ? (
+              <Loading className="my-0 text-primary" />
+            ) : (
+              <>
+                Register <BiUserPlus />
+              </>
+            )}
           </button>
         </div>
       </form>

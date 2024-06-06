@@ -4,7 +4,6 @@ import Loading from "../../../components/Loading";
 const PaymentHistory = () => {
   const [payHistories, , loading] = usePayHistory();
 
-  console.log(payHistories);
   return (
     <div className="w-full lg:p-6 px-2 pb-2 lg:mx-0">
       <h2 className="text-2xl lg:mt-0 lg:mb-12 lg:text-5xl font-semibold text-center mb-6">
@@ -22,6 +21,13 @@ const PaymentHistory = () => {
             </tr>
           </thead>
           <tbody>
+            {!loading && payHistories?.length < 1 && (
+              <tr>
+                <td colSpan={5} className="text-center text-error">
+                  No Payment Data found.
+                </td>
+              </tr>
+            )}
             {loading ? (
               <tr>
                 <td colSpan={6}>

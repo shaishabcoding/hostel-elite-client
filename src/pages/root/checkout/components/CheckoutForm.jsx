@@ -8,6 +8,7 @@ import useMembershipPkg from "../../../../hooks/useMembershipPkg";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import Loading from "../../../../components/Loading";
+import { toast } from "react-toastify";
 
 const CheckoutForm = ({ clientSecret, pkg, profile }) => {
   const [profileUser, refetch] = profile;
@@ -33,16 +34,15 @@ const CheckoutForm = ({ clientSecret, pkg, profile }) => {
       return;
     }
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    const { error } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
 
     if (error) {
-      console.log("[error]", error);
+      console.error("[error]", error);
       setError(error.message);
     } else {
-      console.log("[PaymentMethod]", paymentMethod);
       setError("");
     }
 
@@ -59,11 +59,10 @@ const CheckoutForm = ({ clientSecret, pkg, profile }) => {
       });
 
     if (confirmError) {
-      console.log("confirmError");
+      console.error("confirmError", confirmError);
+      toast.error(confirmError.message);
     } else {
       if (paymentIntent.status === "succeeded") {
-        console.log(paymentIntent.id);
-
         const payment = {
           email: user.email,
           price: pkg.price,

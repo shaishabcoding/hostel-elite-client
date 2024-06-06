@@ -19,7 +19,7 @@ const Profile = () => {
         <div className="flex flex-col w-fit">
           <img
             src={image}
-            className="avatar rounded-full w-[200px] mb-6"
+            className="w-[150px] aspect-square object-center rounded-full bg-gray-50 ring-4 mx-auto mb-6 dark:ring-gray-400"
             alt={`image of ${name}`}
           />
           <h2 className="text-lg ">
