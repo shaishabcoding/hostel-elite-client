@@ -53,17 +53,32 @@ const MyReviews = () => {
         id="review">`,
       didOpen: () => {
         const newReview = Swal.getPopup().querySelector("#review");
-        newReview.addEventListener("change", () => {
+        newReview.addEventListener("input", () => {
           setNewReview(newReview.value);
         });
       },
       confirmButtonText: "Update",
     }).then((result) => {
       if (result.isConfirmed) {
-        setUpdateLoading(true);
+        setUpdateLoading([true, id]);
+        privateClient
+          .put(`/meals/${id}/review`, { review: newReview })
+          .then(({ data }) => {
+            if (data.modifiedCount > 0) {
+              refetch();
+              Swal.fire({
+                title: "Success",
+                text: "Review successfully!",
+                icon: "success",
+                confirmButtonText: "Done",
+              });
+              setUpdateLoading([false, id]);
+            }
+          });
       }
     });
   };
+
   return (
     <div className="w-full lg:p-6 px-2 pb-2 lg:mx-0">
       <h2 className="text-2xl lg:mt-0 lg:mb-12 lg:text-5xl font-semibold text-center mb-6">
@@ -110,12 +125,12 @@ const MyReviews = () => {
                     <td>{reviews.review}</td>
                     <td className="flex gap-2 w-fit">
                       <button
-                        disabled={updateLoading}
+                        disabled={updateLoading[0] && updateLoading[1] === _id}
                         onClick={() => handleUpdate(_id, reviews.review)}
                         title="update"
                         className="btn disabled:text-black text-white btn-info btn-xs md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
                       >
-                        {updateLoading ? (
+                        {updateLoading[0] && updateLoading[1] === _id ? (
                           <span className="loading loading-spinner loading-sm"></span>
                         ) : (
                           <BiSolidEdit />

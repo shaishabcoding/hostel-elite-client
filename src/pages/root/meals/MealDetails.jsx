@@ -48,8 +48,8 @@ const MealDetails = () => {
 
   const handleReview = handleSubmit(async ({ review }) => {
     setReviewLoading(true);
-    const res2 = await privateClient.put(`/meals/${id}/review`, { review });
-    if (res2.data.modifiedCount > 0) {
+    const res = await privateClient.put(`/meals/${id}/review`, { review });
+    if (res.data.modifiedCount > 0) {
       refetch();
       reset();
       Swal.fire({
