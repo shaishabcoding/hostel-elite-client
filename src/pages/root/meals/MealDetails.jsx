@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import useMeal from "../../../hooks/useMeal";
 import Rating from "react-rating";
-import { MdStar, MdStarBorder } from "react-icons/md";
+import { MdOutlineRateReview, MdStar, MdStarBorder } from "react-icons/md";
 import Loading from "../../../components/Loading";
 import { BsCartPlus } from "react-icons/bs";
 import { BiLike } from "react-icons/bi";
@@ -9,12 +9,18 @@ import { Autoplay, EffectCards } from "swiper/modules";
 import { SwiperSlide, Swiper } from "swiper/react";
 import getRandomColor from "../../../utils/getRandomColor";
 import usePrivateClient from "../../../hooks/usePrivateClient";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 const MealDetails = () => {
   const privateClient = usePrivateClient();
   const { id } = useParams();
-  const [meal, refetch, loading] = useMeal(id);
-  if (loading || !meal) {
+  const [meal, refetch, mealLoading] = useMeal(id);
+  const { register, handleSubmit, reset } = useForm();
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const [likeLoading, setLikeLoading] = useState(false);
+  if (mealLoading || !meal) {
     return <Loading />;
   }
   const {
@@ -30,11 +36,29 @@ const MealDetails = () => {
   } = meal;
 
   const handleLike = async () => {
+    setLikeLoading(true);
     const res = await privateClient.put(`/meals/${id}/like`);
     if (res.data.modifiedCount > 0) {
       refetch();
+      setLikeLoading(false);
     }
   };
+
+  const handleReview = handleSubmit(async ({ review }) => {
+    setReviewLoading(true);
+    const res2 = await privateClient.put(`/meals/${id}/review`, { review });
+    if (res2.data.modifiedCount > 0) {
+      refetch();
+      reset();
+      Swal.fire({
+        title: "Success",
+        text: "Review successfully!",
+        icon: "success",
+        confirmButtonText: "Done",
+      });
+    }
+    setReviewLoading(false);
+  });
 
   return (
     <div className="p-2 lg:p-0 lg:py-10">
@@ -72,17 +96,25 @@ const MealDetails = () => {
             </div>
             <div className="flex flex-wrap gap-3">
               <button
-                className="btn btn-primary mt-4 dark:bg-blue-500"
+                className="btn btn-primary mt-4 dark:bg-blue-500 disabled:text-primary"
                 onClick={handleLike}
+                disabled={likeLoading}
               >
-                Like ({likes}) <BiLike />
+                Like ({likes})
+                {likeLoading ? (
+                  <span className="loading loading-spinner loading-md"></span>
+                ) : (
+                  <>
+                    <BiLike />
+                  </>
+                )}
               </button>
               <button className="btn btn-info mt-4 dark:bg-blue-500">
                 Request <BsCartPlus />
               </button>
             </div>
             <div className="mt-6">
-              <b className="mb-6 block">Reviews</b>
+              <b className="mb-6 block">Reviews ({reviews.length})</b>
               <div className="px-10 md:px-16 py-4 lg:p-0">
                 <Swiper
                   data-aos="zoom-in"
@@ -112,6 +144,38 @@ const MealDetails = () => {
                 </Swiper>
               </div>
             </div>
+            <form onSubmit={handleReview} className="w-full mt-4 md:mt-6">
+              <div className="join w-full flex">
+                <div className="grow">
+                  <div className="w-full">
+                    <input
+                      className="input input-bordered join-item border-primary w-full"
+                      type="text"
+                      placeholder="Enter your review"
+                      {...register("review", {
+                        required: "Please enter review",
+                      })}
+                    />
+                  </div>
+                </div>
+                <div className="indicator">
+                  <button
+                    disabled={reviewLoading}
+                    type="submit"
+                    className="btn join-item btn-primary disabled:text-primary"
+                  >
+                    <span className="hidden md:block">Add Review</span>{" "}
+                    {reviewLoading ? (
+                      <span className="loading loading-spinner loading-md"></span>
+                    ) : (
+                      <>
+                        <MdOutlineRateReview />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
