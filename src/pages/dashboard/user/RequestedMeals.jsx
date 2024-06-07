@@ -4,6 +4,8 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import Swal from "sweetalert2";
 import usePrivateClient from "../../../hooks/usePrivateClient";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { TbListDetails } from "react-icons/tb";
 
 const RequestedMeals = () => {
   const [meals, refetch, loading] = useRequestedMeals();
@@ -71,7 +73,7 @@ const RequestedMeals = () => {
               </tr>
             ) : (
               meals?.map((meal, idx) => {
-                const { _id, title, likes, reviews, status } = meal;
+                const { _id, mealId, title, likes, reviews, status } = meal;
                 return (
                   <tr
                     key={_id}
@@ -84,9 +86,12 @@ const RequestedMeals = () => {
                     <td>{likes}</td>
                     <td>{reviews.length}</td>
                     <td>{status}</td>
-                    <td>
+                    <td className="flex gap-2 w-fit">
                       <button
-                        disabled={deleteLoading[0] && deleteLoading[1] === _id}
+                        disabled={
+                          (deleteLoading[0] && deleteLoading[1] === _id) ||
+                          status === "Delivered"
+                        }
                         onClick={() => handleDelete(_id)}
                         title="cancel"
                         className="btn text-white disabled:text-black btn-error btn-xs  md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
@@ -97,6 +102,14 @@ const RequestedMeals = () => {
                           <RiDeleteBin6Fill />
                         )}
                       </button>
+                      <Link className="grid w-full" to={`/meal/${mealId}`}>
+                        <button
+                          title="details"
+                          className="btn text-white btn-xs btn-primary md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
+                        >
+                          <TbListDetails />
+                        </button>
+                      </Link>
                     </td>
                   </tr>
                 );

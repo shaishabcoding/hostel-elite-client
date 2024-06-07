@@ -25,7 +25,7 @@ const ServeMeals = () => {
       if (result.isConfirmed) {
         setServeLoading([true, id]);
         privateClient.put(`/meals/serve/${id}`).then(({ data }) => {
-          if (data.deletedCount > 0) {
+          if (data.modifiedCount > 0) {
             refetch();
             Swal.fire({
               title: "Success",
@@ -80,11 +80,19 @@ const ServeMeals = () => {
                     <td>{status}</td>
                     <td className="flex gap-2 w-fit">
                       <button
+                        disabled={
+                          (serveLoading[0] && serveLoading[1] === _id) ||
+                          status === "Delivered"
+                        }
                         onClick={() => handleServe(_id)}
                         title="Serve"
-                        className="btn text-white btn-error btn-xs  md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
+                        className="btn text-white disabled:text-black btn-info btn-xs  md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
                       >
-                        <MdShoppingCartCheckout />
+                        {serveLoading[0] && serveLoading[1] === _id ? (
+                          <span className="loading loading-spinner loading-sm"></span>
+                        ) : (
+                          <MdShoppingCartCheckout />
+                        )}
                       </button>
                       <Link className="grid w-full" to={`/meal/${mealId}`}>
                         <button

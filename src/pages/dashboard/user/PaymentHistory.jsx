@@ -46,7 +46,7 @@ const PaymentHistory = () => {
                       {idx + 1}
                     </th>
                     <td>{badge}</td>
-                    <td>{price}</td>
+                    <td>${price}</td>
                     <td className="select-text">{paymentId}</td>
                     <td>
                       {new Date(date).toLocaleString("en-US", {

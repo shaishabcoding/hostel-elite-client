@@ -9,7 +9,6 @@ import { Autoplay, EffectCards } from "swiper/modules";
 import { SwiperSlide, Swiper } from "swiper/react";
 import getRandomColor from "../../../utils/getRandomColor";
 import usePrivateClient from "../../../hooks/usePrivateClient";
-import useProfile from "../../../hooks/useProfile";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -23,9 +22,7 @@ const MealDetails = () => {
   const [reviewLoading, setReviewLoading] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [requestLoading, setRequestLoading] = useState(false);
-  const [profile] = useProfile();
 
-  console.log(profile);
   if (mealLoading || !meal) {
     return <Loading />;
   }
@@ -135,7 +132,7 @@ const MealDetails = () => {
                 )}
               </button>
               <button
-                disabled={profile?.badge === "Bronze" || requestLoading}
+                disabled={requestLoading}
                 onClick={handleRequest}
                 className="btn btn-info mt-4 dark:bg-blue-500 disabled:text-primary"
               >
