@@ -1,8 +1,5 @@
-import { Link } from "react-router-dom";
 import useUpcomingMeals from "../../../../hooks/useUpcomingMeals";
-import { BiSolidEdit } from "react-icons/bi";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import { TbListDetails } from "react-icons/tb";
 import usePrivateClient from "../../../../hooks/usePrivateClient";
 import Swal from "sweetalert2";
 import Loading from "../../../../components/Loading";
@@ -12,12 +9,14 @@ import useAuth from "../../../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import Rating from "react-rating";
 import {
+  MdOutlineAddCircleOutline,
   MdOutlineDriveFileRenameOutline,
   MdStar,
   MdStarBorder,
 } from "react-icons/md";
 import imgBB from "../../../../utils/imgBB";
 import { AiOutlineClose } from "react-icons/ai";
+import { GrCloudUpload } from "react-icons/gr";
 const UpcomingMeals = () => {
   const [sort, setSort] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -127,6 +126,15 @@ const UpcomingMeals = () => {
           <option value="likes">Likes</option>
           <option value="reviews">Reviews</option>
         </select>
+        <button
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+          className="btn btn-primary btn-sm md:btn-md flex items-center justify-center gap-1"
+        >
+          <span className="hidden md:block">Add Upcoming meal</span>
+          <MdOutlineAddCircleOutline className="text-xl" />
+        </button>
       </div>
       <div className="overflow-x-auto rounded-md border -z-10">
         <table className="table table-xs md:table-md table-pin-rows table-pin-cols table-zebra bg-white">
@@ -148,9 +156,9 @@ const UpcomingMeals = () => {
                 </td>
               </tr>
             )}
-            {!mealLoading && meals?.length < 1 && (
+            {!mealLoading && meals?.length < 1 && !loading && (
               <tr>
-                <td colSpan={5} className="text-center text-error">
+                <td colSpan={6} className="text-center text-error">
                   No Upcoming Meals Data found.
                 </td>
               </tr>
@@ -177,17 +185,12 @@ const UpcomingMeals = () => {
                     <td>{reviews?.length}</td>
                     <td>{username}</td>
                     <td className="flex gap-2 w-fit">
-                      <Link
-                        className="grid w-full"
-                        to={`/dashboard/meals/edit/${_id}`}
+                      <button
+                        title="publish"
+                        className="btn text-white btn-info btn-xs md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
                       >
-                        <button
-                          title="update"
-                          className="btn text-white btn-info btn-xs md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
-                        >
-                          <BiSolidEdit />
-                        </button>
-                      </Link>
+                        <GrCloudUpload />
+                      </button>
                       <button
                         disabled={deleteLoading[0] && deleteLoading[1] === _id}
                         onClick={() => handleDelete(_id)}
@@ -200,14 +203,6 @@ const UpcomingMeals = () => {
                           <RiDeleteBin6Fill />
                         )}
                       </button>
-                      <Link className="grid w-full" to={`/meal/${_id}`}>
-                        <button
-                          title="details"
-                          className="btn text-white btn-xs btn-primary md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
-                        >
-                          <TbListDetails />
-                        </button>
-                      </Link>
                     </td>
                   </tr>
                 );
@@ -216,7 +211,6 @@ const UpcomingMeals = () => {
           </tbody>
         </table>
       </div>
-      <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
       <Modal
         style={customStyles}
         isOpen={isModalOpen}
@@ -383,23 +377,19 @@ const UpcomingMeals = () => {
             <div>
               <label
                 className={`input input-bordered flex items-center gap-2 dark:bg-gray-500 dark:border-gray-400 ${
-                  errors.likes ? "border-red-500" : ""
+                  errors.reviews ? "border-red-500" : ""
                 }`}
               >
-                Likes
+                Reviews
                 <input
-                  type="number"
-                  min={0}
+                  type="text"
                   className="grow"
-                  placeholder="Enter meal likes"
-                  {...register("likes", {
-                    valueAsNumber: true,
-                    required: "Please enter the number of likes",
-                  })}
+                  placeholder="Enter meal reviews"
+                  {...register("reviews", { required: "Please enter reviews" })}
                 />
               </label>
-              {errors.likes && (
-                <p className="text-red-500">{errors.likes.message}</p>
+              {errors.reviews && (
+                <p className="text-red-500">{errors.reviews.message}</p>
               )}
             </div>
             <label className="input input-bordered flex items-center gap-2 dark:bg-gray-500 dark:border-gray-400">
@@ -420,24 +410,6 @@ const UpcomingMeals = () => {
                 disabled
               />
             </label>
-          </div>
-          <div>
-            <label
-              className={`input mt-4 input-bordered flex items-center gap-2 dark:bg-gray-500 dark:border-gray-400 ${
-                errors.reviews ? "border-red-500" : ""
-              }`}
-            >
-              Reviews
-              <input
-                type="text"
-                className="grow"
-                placeholder="Enter meal reviews"
-                {...register("reviews", { required: "Please enter reviews" })}
-              />
-            </label>
-            {errors.reviews && (
-              <p className="text-red-500">{errors.reviews.message}</p>
-            )}
           </div>
           <div>
             <textarea
