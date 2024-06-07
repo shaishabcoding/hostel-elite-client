@@ -57,6 +57,13 @@ const ServeMeals = () => {
             </tr>
           </thead>
           <tbody>
+            {!loading && meals?.length < 1 && (
+              <tr>
+                <td colSpan={5} className="text-center text-error">
+                  No Serve Meals Data found.
+                </td>
+              </tr>
+            )}
             {loading ? (
               <tr>
                 <td colSpan={6}>

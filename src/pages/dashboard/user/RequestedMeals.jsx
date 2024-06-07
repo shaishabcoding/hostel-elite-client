@@ -61,7 +61,7 @@ const RequestedMeals = () => {
             {!loading && meals?.length < 1 && (
               <tr>
                 <td colSpan={5} className="text-center text-error">
-                  No meals Data found.
+                  No Requested meals Data found.
                 </td>
               </tr>
             )}

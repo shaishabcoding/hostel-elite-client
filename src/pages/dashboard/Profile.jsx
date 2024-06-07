@@ -7,7 +7,9 @@ const Profile = () => {
     return <Loading />;
   }
   if (!profile) {
-    return <div>No profile data available.</div>;
+    return (
+      <div className="text-center text-error">No profile data available.</div>
+    );
   }
   const { image, name, email, role, mealCount, badge } = profile;
   return (

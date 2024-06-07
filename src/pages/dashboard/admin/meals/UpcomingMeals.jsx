@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import useMeals from "../../../../hooks/useMeals";
+import useUpcomingMeals from "../../../../hooks/useUpcomingMeals";
 import { BiSolidEdit } from "react-icons/bi";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { TbListDetails } from "react-icons/tb";
@@ -9,7 +9,7 @@ import Loading from "../../../../components/Loading";
 import { useState } from "react";
 const UpcomingMeals = () => {
   const [sort, setSort] = useState("");
-  const [meals, refetch, loading] = useMeals(sort);
+  const [meals, refetch, loading] = useUpcomingMeals(sort);
   const privateClient = usePrivateClient();
   const handleDelete = (id) => {
     Swal.fire({
@@ -70,6 +70,13 @@ const UpcomingMeals = () => {
             </tr>
           </thead>
           <tbody>
+            {!loading && meals?.length < 1 && (
+              <tr>
+                <td colSpan={5} className="text-center text-error">
+                  No Upcoming Meals Data found.
+                </td>
+              </tr>
+            )}
             {loading ? (
               <tr>
                 <td colSpan={6}>
