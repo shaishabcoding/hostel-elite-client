@@ -9,9 +9,11 @@ import { Autoplay, EffectCards } from "swiper/modules";
 import { SwiperSlide, Swiper } from "swiper/react";
 import getRandomColor from "../../../utils/getRandomColor";
 import usePrivateClient from "../../../hooks/usePrivateClient";
+import useProfile from "../../../hooks/useProfile";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const MealDetails = () => {
   const privateClient = usePrivateClient();
@@ -20,6 +22,10 @@ const MealDetails = () => {
   const { register, handleSubmit, reset } = useForm();
   const [reviewLoading, setReviewLoading] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
+  const [requestLoading, setRequestLoading] = useState(false);
+  const [profile] = useProfile();
+
+  console.log(profile);
   if (mealLoading || !meal) {
     return <Loading />;
   }
@@ -34,8 +40,6 @@ const MealDetails = () => {
     reviews,
     likes,
   } = meal;
-
-  console.log(meal);
 
   const handleLike = async () => {
     setLikeLoading(true);
@@ -61,6 +65,25 @@ const MealDetails = () => {
     }
     setReviewLoading(false);
   });
+
+  const handleRequest = async () => {
+    setRequestLoading(true);
+    const requestedMeal = { mealId: id, status: "Pending" };
+    const res = await privateClient.post("/meals/request", requestedMeal);
+    if (res.data.message) {
+      toast.error(res.data.message);
+    }
+    if (res.data.insertedId) {
+      reset();
+      Swal.fire({
+        title: "Success",
+        text: "Meal request successfully!",
+        icon: "success",
+        confirmButtonText: "Done",
+      });
+    }
+    setRequestLoading(false);
+  };
 
   return (
     <div className="p-2 lg:p-0 lg:py-10">
@@ -111,8 +134,19 @@ const MealDetails = () => {
                   </>
                 )}
               </button>
-              <button className="btn btn-info mt-4 dark:bg-blue-500">
-                Request <BsCartPlus />
+              <button
+                disabled={profile?.badge === "Bronze" || requestLoading}
+                onClick={handleRequest}
+                className="btn btn-info mt-4 dark:bg-blue-500 disabled:text-primary"
+              >
+                Request
+                {requestLoading ? (
+                  <span className="loading loading-spinner loading-md"></span>
+                ) : (
+                  <>
+                    <BsCartPlus />
+                  </>
+                )}
               </button>
             </div>
             <div className="mt-6">

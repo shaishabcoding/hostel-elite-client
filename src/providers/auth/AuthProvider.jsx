@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
             email: user?.email,
             name: user?.displayName,
             image: user?.photoURL,
-            badge: "bronze",
+            badge: "Bronze",
           })
           .then(({ data }) => {
             if (data.success) {
@@ -77,7 +77,7 @@ const AuthProvider = ({ children }) => {
             email: user?.email,
             name: user?.displayName,
             image: user?.photoURL,
-            badge: "bronze",
+            badge: "Bronze",
           })
           .then(({ data }) => {
             if (data.success) {
