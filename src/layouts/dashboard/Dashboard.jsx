@@ -32,7 +32,7 @@ const Dashboard = () => {
         <NavLink to="/dashboard/meals/serve">Serve Meals</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all2">Upcoming Meals</NavLink>
+        <NavLink to="/dashboard/meals/upcoming">Upcoming Meals</NavLink>
       </li>
     </ul>
   ) : (

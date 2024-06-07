@@ -19,11 +19,14 @@ import PaymentHistory from "../pages/dashboard/user/PaymentHistory";
 import MyReviews from "../pages/dashboard/user/MyReviews";
 import RequestedMeals from "../pages/dashboard/user/RequestedMeals";
 import ServeMeals from "../pages/dashboard/admin/meals/ServeMeals";
+import Error from "../pages/404/Error";
+import UpcomingMeals from "../pages/dashboard/admin/meals/UpcomingMeals";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
@@ -120,6 +123,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AllMeals />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "meals/upcoming",
+        element: (
+          <AdminRoute>
+            <UpcomingMeals />
           </AdminRoute>
         ),
       },
