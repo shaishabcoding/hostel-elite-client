@@ -1,4 +1,44 @@
+import { useState } from "react";
+import useServeMeals from "../../../../hooks/useServeMeals";
+import Swal from "sweetalert2";
+import Loading from "../../../../components/Loading";
+import { Link } from "react-router-dom";
+import { TbListDetails } from "react-icons/tb";
+import { MdShoppingCartCheckout } from "react-icons/md";
+import usePrivateClient from "../../../../hooks/usePrivateClient";
+
 const ServeMeals = () => {
+  const [meals, refetch, loading] = useServeMeals();
+  const [serveLoading, setServeLoading] = useState([false, ""]);
+  const privateClient = usePrivateClient();
+
+  const handleServe = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, serve it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setServeLoading([true, id]);
+        privateClient.put(`/meals/serve/${id}`).then(({ data }) => {
+          if (data.deletedCount > 0) {
+            refetch();
+            Swal.fire({
+              title: "Success",
+              text: "Meal serve successfully!",
+              icon: "success",
+              confirmButtonText: "Done",
+            });
+            setServeLoading([false, id]);
+          }
+        });
+      }
+    });
+  };
   return (
     <div className="w-full lg:p-6 px-2 pb-2 lg:mx-0">
       <h2 className="text-2xl lg:mt-0 lg:mb-12 lg:text-5xl font-semibold text-center mb-6">
@@ -16,7 +56,7 @@ const ServeMeals = () => {
               <td></td>
             </tr>
           </thead>
-          {/* <tbody>
+          <tbody>
             {loading ? (
               <tr>
                 <td colSpan={6}>
@@ -25,7 +65,7 @@ const ServeMeals = () => {
               </tr>
             ) : (
               meals?.map((meal, idx) => {
-                const { _id, title, likes, reviews } = meal;
+                const { _id, mealId, title, email, username, status } = meal;
                 return (
                   <tr
                     key={_id}
@@ -35,17 +75,18 @@ const ServeMeals = () => {
                       {idx + 1}
                     </th>
                     <td>{title}</td>
-                    <td>{likes}</td>
-                    <td>{reviews?.length}</td>
+                    <td>{email}</td>
+                    <td>{username}</td>
+                    <td>{status}</td>
                     <td className="flex gap-2 w-fit">
                       <button
-                        onClick={() => handleDelete(_id)}
-                        title="delete"
+                        onClick={() => handleServe(_id)}
+                        title="Serve"
                         className="btn text-white btn-error btn-xs  md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
                       >
-                        <RiDeleteBin6Fill />
+                        <MdShoppingCartCheckout />
                       </button>
-                      <Link className="grid w-full" to={`/meal/${_id}`}>
+                      <Link className="grid w-full" to={`/meal/${mealId}`}>
                         <button
                           title="details"
                           className="btn text-white btn-xs btn-primary md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
@@ -58,7 +99,7 @@ const ServeMeals = () => {
                 );
               })
             )}
-          </tbody> */}
+          </tbody>
         </table>
       </div>
     </div>
