@@ -26,10 +26,10 @@ const Dashboard = () => {
         <NavLink to="/dashboard/meals/all">All Meals</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/reviews">All Reviews</NavLink>
+        <NavLink to="/dashboard/meals/reviews">All Reviews</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/meals/all2">Serve Meals</NavLink>
+        <NavLink to="/dashboard/meals/serve">Serve Meals</NavLink>
       </li>
       <li>
         <NavLink to="/dashboard/meals/all2">Upcoming Meals</NavLink>

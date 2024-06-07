@@ -1,10 +1,43 @@
 import useRequestedMeals from "../../../hooks/useRequestedMeals";
 import Loading from "../../../components/Loading";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import Swal from "sweetalert2";
+import usePrivateClient from "../../../hooks/usePrivateClient";
+import { useState } from "react";
 
 const RequestedMeals = () => {
-  const [meals, , loading] = useRequestedMeals();
-  console.log(meals);
+  const [meals, refetch, loading] = useRequestedMeals();
+  const [deleteLoading, setDeleteLoading] = useState([false, ""]);
+  const privateClient = usePrivateClient();
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setDeleteLoading([true, id]);
+        privateClient.delete(`/meals/request/${id}`).then(({ data }) => {
+          if (data.deletedCount > 0) {
+            refetch();
+            Swal.fire({
+              title: "Success",
+              text: "Meal cancel successfully!",
+              icon: "success",
+              confirmButtonText: "Done",
+            });
+            setDeleteLoading([false, id]);
+          }
+        });
+      }
+    });
+  };
+
   return (
     <div className="w-full lg:p-6 px-2 pb-2 lg:mx-0">
       <h2 className="text-2xl lg:mt-0 lg:mb-12 lg:text-5xl font-semibold text-center mb-6">
@@ -53,16 +86,16 @@ const RequestedMeals = () => {
                     <td>{status}</td>
                     <td>
                       <button
-                        // disabled={deleteLoading[0] && deleteLoading[1] === _id}
-                        // onClick={() => handleDelete(_id)}
+                        disabled={deleteLoading[0] && deleteLoading[1] === _id}
+                        onClick={() => handleDelete(_id)}
                         title="cancel"
                         className="btn text-white disabled:text-black btn-error btn-xs  md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
                       >
-                        {/* {deleteLoading[0] && deleteLoading[1] === _id ? (
+                        {deleteLoading[0] && deleteLoading[1] === _id ? (
                           <span className="loading loading-spinner loading-sm"></span>
-                        ) : ( */}
-                        <RiDeleteBin6Fill />
-                        {/* )} */}
+                        ) : (
+                          <RiDeleteBin6Fill />
+                        )}
                       </button>
                     </td>
                   </tr>

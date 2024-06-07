@@ -18,6 +18,7 @@ import Checkout from "../pages/root/checkout/Checkout";
 import PaymentHistory from "../pages/dashboard/user/PaymentHistory";
 import MyReviews from "../pages/dashboard/user/MyReviews";
 import RequestedMeals from "../pages/dashboard/user/RequestedMeals";
+import ServeMeals from "../pages/dashboard/admin/meals/ServeMeals";
 
 const router = createBrowserRouter([
   {
@@ -123,7 +124,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "reviews",
+        path: "meals/reviews",
         element: (
           <AdminRoute>
             <AllReviews />
@@ -135,6 +136,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "meals/serve",
+        element: (
+          <AdminRoute>
+            <ServeMeals />
           </AdminRoute>
         ),
       },
