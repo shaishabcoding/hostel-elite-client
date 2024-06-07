@@ -13,6 +13,7 @@ const ServeMeals = () => {
   const privateClient = usePrivateClient();
 
   const handleServe = (id) => {
+    setServeLoading([true, id]);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -23,7 +24,6 @@ const ServeMeals = () => {
       confirmButtonText: "Yes, serve it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        setServeLoading([true, id]);
         privateClient.put(`/meals/serve/${id}`).then(({ data }) => {
           if (data.modifiedCount > 0) {
             refetch();
@@ -36,7 +36,7 @@ const ServeMeals = () => {
             setServeLoading([false, id]);
           }
         });
-      }
+      } else setServeLoading([false, id]);
     });
   };
   return (

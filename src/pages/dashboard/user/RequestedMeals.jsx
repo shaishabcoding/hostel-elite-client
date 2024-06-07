@@ -13,6 +13,7 @@ const RequestedMeals = () => {
   const privateClient = usePrivateClient();
 
   const handleDelete = (id) => {
+    setDeleteLoading([true, id]);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -23,7 +24,6 @@ const RequestedMeals = () => {
       confirmButtonText: "Yes, cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        setDeleteLoading([true, id]);
         privateClient.delete(`/meals/request/${id}`).then(({ data }) => {
           if (data.deletedCount > 0) {
             refetch();
@@ -36,7 +36,7 @@ const RequestedMeals = () => {
             setDeleteLoading([false, id]);
           }
         });
-      }
+      } else setDeleteLoading([false, id]);
     });
   };
 

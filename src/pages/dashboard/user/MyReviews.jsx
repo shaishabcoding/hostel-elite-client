@@ -15,6 +15,7 @@ const MyReviews = () => {
   const privateClient = usePrivateClient();
 
   const handleDelete = (id) => {
+    setDeleteLoading([true, id]);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -25,7 +26,6 @@ const MyReviews = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        setDeleteLoading([true, id]);
         privateClient.delete(`/meals/${id}/review`).then(({ data }) => {
           if (data.modifiedCount > 0) {
             refetch();
@@ -38,11 +38,12 @@ const MyReviews = () => {
             setDeleteLoading([false, id]);
           }
         });
-      }
+      } else setDeleteLoading([false, id]);
     });
   };
 
   const handleUpdate = (id, text) => {
+    setUpdateLoading([true, id]);
     Swal.fire({
       title: "Update Review",
       html: `
@@ -60,7 +61,6 @@ const MyReviews = () => {
       confirmButtonText: "Update",
     }).then((result) => {
       if (result.isConfirmed) {
-        setUpdateLoading([true, id]);
         privateClient
           .put(`/meals/${id}/review`, { review: newReview })
           .then(({ data }) => {
@@ -75,7 +75,7 @@ const MyReviews = () => {
               setUpdateLoading([false, id]);
             }
           });
-      }
+      } else setUpdateLoading([false, id]);
     });
   };
 

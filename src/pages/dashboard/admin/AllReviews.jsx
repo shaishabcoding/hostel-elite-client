@@ -5,11 +5,15 @@ import Loading from "../../../components/Loading";
 import { Link } from "react-router-dom";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { TbListDetails } from "react-icons/tb";
+import { useState } from "react";
 
 const AllReviews = () => {
   const [meals, refetch, loading] = useMeals();
   const privateClient = usePrivateClient();
+  const [deleteLoading, setDeleteLoading] = useState([false, ""]);
+
   const handleDelete = (id) => {
+    setDeleteLoading([true, id]);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -23,6 +27,7 @@ const AllReviews = () => {
         privateClient.delete(`/meals/${id}`).then(({ data }) => {
           if (data.deletedCount > 0) {
             refetch();
+            setDeleteLoading([false, id]);
             Swal.fire({
               title: "Success",
               text: "Meal delete successfully!",
@@ -31,7 +36,7 @@ const AllReviews = () => {
             });
           }
         });
-      }
+      } else setDeleteLoading([false, id]);
     });
   };
   return (
@@ -80,11 +85,16 @@ const AllReviews = () => {
                     <td>{reviews?.length}</td>
                     <td className="flex gap-2 w-fit">
                       <button
+                        disabled={deleteLoading[0] && deleteLoading[1] === _id}
                         onClick={() => handleDelete(_id)}
                         title="delete"
-                        className="btn text-white btn-error btn-xs  md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
+                        className="btn text-white disabled:text-primary btn-error btn-xs  md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
                       >
-                        <RiDeleteBin6Fill />
+                        {deleteLoading[0] && deleteLoading[1] === _id ? (
+                          <span className="loading loading-spinner loading-sm"></span>
+                        ) : (
+                          <RiDeleteBin6Fill />
+                        )}
                       </button>
                       <Link className="grid w-full" to={`/meal/${_id}`}>
                         <button
