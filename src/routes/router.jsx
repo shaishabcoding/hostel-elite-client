@@ -17,6 +17,7 @@ import MealDetails from "../pages/root/meals/MealDetails";
 import Checkout from "../pages/root/checkout/Checkout";
 import PaymentHistory from "../pages/dashboard/user/PaymentHistory";
 import MyReviews from "../pages/dashboard/user/MyReviews";
+import RequestedMeals from "../pages/dashboard/user/RequestedMeals";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyReviews />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "meals/request",
+        element: (
+          <PrivateRoute>
+            <RequestedMeals />
           </PrivateRoute>
         ),
       },
