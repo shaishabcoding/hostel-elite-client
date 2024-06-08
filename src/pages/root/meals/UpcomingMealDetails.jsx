@@ -10,12 +10,14 @@ import usePrivateClient from "../../../hooks/usePrivateClient";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useUpcomingMeal from "../../../hooks/useUpcomingMeal";
+import { useNavigate } from "react-router-dom";
 
 const UpcomingMealDetails = () => {
   const privateClient = usePrivateClient();
   const { id } = useParams();
   const [meal, refetch, mealLoading] = useUpcomingMeal(id);
   const [likeLoading, setLikeLoading] = useState(false);
+  const navigate = useNavigate();
 
   if (mealLoading || !meal) {
     return <Loading />;
@@ -40,6 +42,8 @@ const UpcomingMealDetails = () => {
       if (res.data.modifiedCount > 0) {
         refetch();
         setLikeLoading(false);
+      } else if (res.data.insertedId) {
+        navigate("/meal/" + res.data.insertedId);
       }
     } catch (err) {
       setLikeLoading(false);
