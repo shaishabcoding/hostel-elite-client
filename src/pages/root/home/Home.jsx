@@ -1,14 +1,17 @@
 import Banner from "./components/Banner";
 import Categories from "./components/Categories";
+import Faq from "./components/Faq";
 import Membership from "./components/Membership";
+import NewsLetter from "./components/NewsLetter";
 
 const Home = () => {
   return (
     <div>
       <Banner />
       <Categories />
-      {/* todo: add 2 section */}
       <Membership />
+      <Faq />
+      <NewsLetter />
     </div>
   );
 };
