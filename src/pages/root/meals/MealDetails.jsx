@@ -84,7 +84,7 @@ const MealDetails = () => {
       }
       setRequestLoading(false);
     } catch (err) {
-      setReviewLoading(false);
+      setRequestLoading(false);
       toast.error(err.response.data.message);
     }
   };

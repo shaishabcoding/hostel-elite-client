@@ -37,17 +37,6 @@ const Navbar = () => {
           <li>
             <NavLink to="/meals/upcoming">Upcoming Meals</NavLink>
           </li>
-          <li>
-            <NavLink
-              className="flex items-center justify-center h-full"
-              to="/books/borrowed"
-            >
-              <IoNotificationsSharp className="text-[1.2em]" />
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/books/my">My Books</NavLink>
-          </li>
         </>
       ) : (
         <>
@@ -104,10 +93,13 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end flex items-center">
-        <div className="dropdown dropdown-bottom dropdown-end mr-2">
+        <div className="mr-2">
+          <button className="btn m-1 mr-0 text-2xl aspect-square btn-ghost dark:hover:bg-gray-500 p-2 rounded-full">
+            <IoNotificationsSharp />
+          </button>
           <button
             onClick={toggleDarkMode}
-            className="btn m-1 text-3xl btn-ghost dark:hover:bg-gray-500 p-2 rounded-full"
+            className="btn m-1 ml-0 text-3xl btn-ghost dark:hover:bg-gray-500 p-2 rounded-full"
           >
             {isDarkMode ? <CiDark /> : <CiLight />}
           </button>
