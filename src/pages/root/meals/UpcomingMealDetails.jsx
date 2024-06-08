@@ -1,31 +1,26 @@
 import { useParams } from "react-router-dom";
-import useMeal from "../../../hooks/useMeal";
 import Rating from "react-rating";
-import { MdOutlineRateReview, MdStar, MdStarBorder } from "react-icons/md";
+import { MdStar, MdStarBorder } from "react-icons/md";
 import Loading from "../../../components/Loading";
-import { BsCartPlus } from "react-icons/bs";
 import { BiLike } from "react-icons/bi";
 import { Autoplay, EffectCards } from "swiper/modules";
 import { SwiperSlide, Swiper } from "swiper/react";
 import getRandomColor from "../../../utils/getRandomColor";
 import usePrivateClient from "../../../hooks/usePrivateClient";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
-import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import useUpcomingMeal from "../../../hooks/useUpcomingMeal";
 
-const MealDetails = () => {
+const UpcomingMealDetails = () => {
   const privateClient = usePrivateClient();
   const { id } = useParams();
-  const [meal, refetch, mealLoading] = useMeal(id);
-  const { register, handleSubmit, reset } = useForm();
-  const [reviewLoading, setReviewLoading] = useState(false);
+  const [meal, refetch, mealLoading] = useUpcomingMeal(id);
   const [likeLoading, setLikeLoading] = useState(false);
-  const [requestLoading, setRequestLoading] = useState(false);
 
   if (mealLoading || !meal) {
     return <Loading />;
   }
+
   const {
     image,
     title,
@@ -41,50 +36,13 @@ const MealDetails = () => {
   const handleLike = async () => {
     try {
       setLikeLoading(true);
-      const res = await privateClient.put(`/meals/${id}/like`);
+      const res = await privateClient.put(`/meals/upcoming/${id}/like`);
       if (res.data.modifiedCount > 0) {
         refetch();
         setLikeLoading(false);
       }
     } catch (err) {
       setLikeLoading(false);
-      toast.error(err.response.data.message);
-    }
-  };
-
-  const handleReview = handleSubmit(async ({ review }) => {
-    setReviewLoading(true);
-    const res = await privateClient.put(`/meals/${id}/review`, { review });
-    if (res.data.modifiedCount > 0) {
-      refetch();
-      reset();
-      Swal.fire({
-        title: "Success",
-        text: "Review successfully!",
-        icon: "success",
-        confirmButtonText: "Done",
-      });
-    }
-    setReviewLoading(false);
-  });
-
-  const handleRequest = async () => {
-    try {
-      setRequestLoading(true);
-      const requestedMeal = { mealId: id, status: "Pending" };
-      const res = await privateClient.post("/meals/request", requestedMeal);
-      if (res.data.insertedId) {
-        reset();
-        Swal.fire({
-          title: "Success",
-          text: "Meal request successfully!",
-          icon: "success",
-          confirmButtonText: "Done",
-        });
-      }
-      setRequestLoading(false);
-    } catch (err) {
-      setReviewLoading(false);
       toast.error(err.response.data.message);
     }
   };
@@ -138,20 +96,6 @@ const MealDetails = () => {
                   </>
                 )}
               </button>
-              <button
-                disabled={requestLoading}
-                onClick={handleRequest}
-                className="btn btn-info mt-4 dark:bg-blue-500 disabled:text-primary"
-              >
-                Request
-                {requestLoading ? (
-                  <span className="loading loading-spinner loading-md"></span>
-                ) : (
-                  <>
-                    <BsCartPlus />
-                  </>
-                )}
-              </button>
             </div>
             <div className="mt-6">
               <b className="mb-6 block">Reviews ({reviews.length || 0})</b>
@@ -184,38 +128,6 @@ const MealDetails = () => {
                 </Swiper>
               </div>
             </div>
-            <form onSubmit={handleReview} className="w-full mt-4 md:mt-6">
-              <div className="join w-full flex">
-                <div className="grow">
-                  <div className="w-full">
-                    <input
-                      className="input input-bordered join-item border-primary w-full"
-                      type="text"
-                      placeholder="Enter your review"
-                      {...register("review", {
-                        required: "Please enter review",
-                      })}
-                    />
-                  </div>
-                </div>
-                <div className="indicator">
-                  <button
-                    disabled={reviewLoading}
-                    type="submit"
-                    className="btn join-item btn-primary disabled:text-primary"
-                  >
-                    <span className="hidden md:block">Add Review</span>{" "}
-                    {reviewLoading ? (
-                      <span className="loading loading-spinner loading-md"></span>
-                    ) : (
-                      <>
-                        <MdOutlineRateReview />
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </form>
           </div>
         </div>
       </div>
@@ -223,4 +135,4 @@ const MealDetails = () => {
   );
 };
 
-export default MealDetails;
+export default UpcomingMealDetails;

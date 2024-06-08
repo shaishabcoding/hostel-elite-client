@@ -3,7 +3,7 @@ import { TbListDetails } from "react-icons/tb";
 import Rating from "react-rating";
 import { Link } from "react-router-dom";
 
-const MealCard = ({ meal }) => {
+const MealCard = ({ meal, url }) => {
   const { title, image, rating, price, _id, category } = meal;
   return (
     <div className="rounded-lg h-full overflow-hidden flex flex-col border border-gray-200 shadow-sm bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
@@ -29,7 +29,7 @@ const MealCard = ({ meal }) => {
         </p>
         <p className="mb-3">Price : ${price}</p>
         <div className="grid gap-3">
-          <Link className="grid w-full" to={`/meal/${_id}`}>
+          <Link className="grid w-full" to={`${url}${_id}`}>
             <button className="btn btn-accent btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400">
               View Details <TbListDetails />
             </button>

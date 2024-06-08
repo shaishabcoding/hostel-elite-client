@@ -27,7 +27,7 @@ const Categories = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {breakfastMeal?.map((meal) => (
-                <MealCard meal={meal} key={meal._id} />
+                <MealCard meal={meal} url="/meal/" key={meal._id} />
               ))}
             </div>
           )}
@@ -38,7 +38,7 @@ const Categories = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {lunchMeal?.map((meal) => (
-                <MealCard meal={meal} key={meal._id} />
+                <MealCard meal={meal} url="/meal/" key={meal._id} />
               ))}
             </div>
           )}
@@ -49,7 +49,7 @@ const Categories = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {dinnerMeal?.map((meal) => (
-                <MealCard meal={meal} key={meal._id} />
+                <MealCard meal={meal} url="/meal/" key={meal._id} />
               ))}
             </div>
           )}
@@ -60,7 +60,7 @@ const Categories = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {allMeal?.map((meal) => (
-                <MealCard meal={meal} key={meal._id} />
+                <MealCard meal={meal} url="/meal/" key={meal._id} />
               ))}
             </div>
           )}

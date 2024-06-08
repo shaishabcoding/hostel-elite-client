@@ -21,6 +21,8 @@ import RequestedMeals from "../pages/dashboard/user/RequestedMeals";
 import ServeMeals from "../pages/dashboard/admin/meals/ServeMeals";
 import Error from "../pages/404/Error";
 import UpcomingMeals from "../pages/dashboard/admin/meals/UpcomingMeals";
+import UpMeals from "../pages/root/meals/UpcomingMeals";
+import UpcomingMealDetails from "../pages/root/meals/UpcomingMealDetails";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: "meal/:id",
         element: <MealDetails />,
+      },
+      {
+        path: "meal/upcoming/:id",
+        element: <UpcomingMealDetails />,
+      },
+      {
+        path: "meals/upcoming",
+        element: <UpMeals />,
       },
       {
         path: "checkout/:pkgName",

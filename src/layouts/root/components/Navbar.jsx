@@ -32,7 +32,7 @@ const Navbar = () => {
       {user ? (
         <>
           <li>
-            <NavLink to="/meals">Meals</NavLink>
+            <NavLink to="/meals/all">Meals</NavLink>
           </li>
           <li>
             <NavLink to="/meals/upcoming">Upcoming Meals</NavLink>
