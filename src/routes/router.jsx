@@ -23,6 +23,7 @@ import Error from "../pages/404/Error";
 import UpcomingMeals from "../pages/dashboard/admin/meals/UpcomingMeals";
 import UpMeals from "../pages/root/meals/UpcomingMeals";
 import UpcomingMealDetails from "../pages/root/meals/UpcomingMealDetails";
+import Meals from "../pages/root/meals/AllMeals";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "meals/upcoming",
         element: <UpMeals />,
+      },
+      {
+        path: "meals/all",
+        element: <Meals />,
       },
       {
         path: "checkout/:pkgName",

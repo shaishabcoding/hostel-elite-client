@@ -10,7 +10,7 @@ const useMeals = (sort) => {
     enabled: !loading,
     queryFn: async () => {
       const res = await privateClient.get(`/meals?sort=${sort}`);
-      return res.data;
+      return res.data.meals;
     },
   });
   return [data, refetch, isPending || isLoading];
