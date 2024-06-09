@@ -10,12 +10,13 @@ const AllMeals = () => {
   const [category, setCategory] = useState(null);
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
+  const [search, setSearch] = useState("");
 
   const getMeals = async ({ pageParam = 0 }) => {
     const { data } = await privateClient(
       `/meals?limit=10&offset=${pageParam}&category=${
         category || "All"
-      }&minPrice=${min}&maxPrice=${max}`
+      }&minPrice=${min}&maxPrice=${max}&search=${search}`
     );
 
     return { ...data, prevOffset: pageParam };
@@ -23,7 +24,7 @@ const AllMeals = () => {
 
   const { data, isLoading, isPending, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
-      queryKey: ["mealsAll", category, min, max],
+      queryKey: ["mealsAll", category, min, max, search],
       queryFn: getMeals,
       getNextPageParam: (lastPage) =>
         lastPage.prevOffset + 10 > lastPage.mealsCount
@@ -40,46 +41,51 @@ const AllMeals = () => {
       </h2>
       {(isLoading || isPending) && <Loading />}
       <div className="flex items-center justify-center gap-4 mb-4 lg:mb-8">
-        <div className="join">
-          <div>
-            <div>
-              <input
-                onBlur={(e) => {
-                  setMin(+e.target.value);
-                }}
-                className="input w-20 input-bordered join-item"
-                placeholder="Min"
-              />
-            </div>
+        <div className="w-fit">
+          <div className="w-full flex">
+            <input
+              onBlur={(e) => {
+                setMin(+e.target.value);
+              }}
+              className="input dark:bg-gray-500 dark:text-white rounded-none rounded-tl-md w-20 input-bordered input-sm md:input-md"
+              placeholder="Min"
+            />
+            <input
+              onBlur={(e) => {
+                setMax(+e.target.value);
+              }}
+              className="input dark:bg-gray-500 dark:text-white rounded-none w-20 input-bordered input-sm md:input-md"
+              placeholder="Max"
+            />
+            <select
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+              defaultValue="default"
+              className="select dark:bg-gray-500 dark:text-white grow select-bordered rounded-none rounded-tr-md select-sm md:select-md"
+            >
+              <option disabled value="default">
+                Categories
+              </option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+              <option value="All">All</option>
+            </select>
           </div>
-          <div>
-            <div>
-              <input
-                onBlur={(e) => {
-                  setMax(+e.target.value);
-                }}
-                className="input w-20 input-bordered join-item"
-                placeholder="Max"
-              />
-            </div>
-          </div>
-          <select
-            onChange={(e) => {
-              setCategory(e.target.value);
+          <input
+            onBlur={(e) => {
+              setSearch(e.target.value);
             }}
-            defaultValue="default"
-            className="select select-bordered join-item"
-          >
-            <option disabled value="default">
-              Categories
-            </option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="All">All</option>
-          </select>
+            className="input dark:bg-gray-500 dark:text-white w-full input-bordered rounded-none rounded-b-md input-sm md:input-md"
+            placeholder="Search meals"
+          />
         </div>
       </div>
+      {!isLoading && meals?.length < 1 && (
+        <p className="text-center text-error">No meals data found.</p>
+      )}
+
       <InfiniteScroll
         dataLength={data?.pages[0].mealsCount || 0}
         next={() => fetchNextPage()}
