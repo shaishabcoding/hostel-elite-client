@@ -6,16 +6,13 @@ import "swiper/css/effect-cards";
 import { Autoplay, EffectCards } from "swiper/modules";
 import getRandomColor from "../../../../utils/getRandomColor";
 import { FaSearch } from "react-icons/fa";
+import useTabMeals from "../../../../hooks/useTabMeals";
+import MealCard from "./MealCard";
+import Loading from "../../../../components/Loading";
 
 const Banner = () => {
-  // Todo: change images
-  const images = [
-    "https://i.ibb.co/LnG8p9d/The-Catcher-in-the-Rye.jpg",
-    "https://i.ibb.co/0JjBcZT/The-Great-Gatsby.jpg",
-    "https://i.ibb.co/DbPDd0Y/To-Kill-a-Mockingbird.jpg",
-    "https://i.ibb.co/Pg4F2gG/1984.jpg",
-    "https://i.ibb.co/JRRZK27/The-Hobbit.jpg",
-  ];
+  const [meals, , loading] = useTabMeals("All");
+
   return (
     <div className="hero min-h-screen my-1 lg:rounded-lg lg:mt-6 lg:mb-10 md:py-10 bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
       <div className="hero-content flex-col lg:flex-row-reverse lg:p-28 gap-4 lg:gap-20 overflow-hidden">
@@ -29,18 +26,19 @@ const Banner = () => {
           modules={[Autoplay, EffectCards]}
           className="w-[220px] md:w-[500px] lg:w-[300px] drop-shadow-md"
         >
-          {images.map((image, idx) => (
-            <SwiperSlide
-              key={idx}
-              style={{ backgroundColor: getRandomColor() }}
-              className="p-2 rounded-lg"
-            >
-              <img
-                src={image}
-                className="w-full aspect-square md:aspect-video lg:aspect-square rounded-lg drop-shadow-md"
-              />
-            </SwiperSlide>
-          ))}
+          {loading ? (
+            <Loading />
+          ) : (
+            meals?.map((meal, idx) => (
+              <SwiperSlide
+                key={idx}
+                style={{ backgroundColor: getRandomColor() }}
+                className="p-2 rounded-lg"
+              >
+                <MealCard meal={meal} url="/meal/" key={meal._id} />
+              </SwiperSlide>
+            ))
+          )}
         </Swiper>
         <div className="md:px-10 lg:pl-0">
           <h1

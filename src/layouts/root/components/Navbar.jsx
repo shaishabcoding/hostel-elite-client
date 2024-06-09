@@ -116,7 +116,7 @@ const Navbar = () => {
               >
                 <span className="mx-4 mt-2 font-bold">{user?.displayName}</span>
                 <li>
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/dashboard/profile">Dashboard</Link>
                 </li>
                 <button
                   className="btn btn-sm text-xs p-0 bg-white dark:bg-gray-500 dark:border-gray-400 dark:text-white"
