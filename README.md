@@ -1,6 +1,8 @@
 # Hostel Elite
 
-Hostel Management System for a university, enabling administrators to manage student meals and food reviews.
+## Description
+
+Hostel Elite is a Hostel Management system designed for university administrators to efficiently manage student meals and food reviews.
 
 ![Banner Image](https://i.ibb.co/cry83Dr/banner.png)
 
