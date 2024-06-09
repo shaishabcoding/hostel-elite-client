@@ -94,7 +94,7 @@ const MealDetails = () => {
       <div className="rounded-lg overflow-hidden flex flex-col lg:flex-row border border-gray-100 shadow-sm bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
         <img
           src={image}
-          className="flex-1 m-4 dark:bg-gray-400 rounded-lg aspect-video object-cover"
+          className="lg:w-1/2 m-4 dark:bg-gray-400 rounded-lg aspect-video object-cover"
         />
         <div className="flex-1">
           <div className="p-3 flex-1 pb-5 dark:bg-gray-600 dark:text-white grow h-full flex flex-col">
