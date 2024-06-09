@@ -214,11 +214,11 @@ const UpcomingMeals = () => {
       <Modal
         style={customStyles}
         isOpen={isModalOpen}
-        contentLabel="Example Modal"
+        contentLabel="Upcoming meal Modal"
       >
         <form
           onSubmit={handleSubmit(handleFormSubmit)}
-          className="h-screen p-6 overflow-scroll bg-gradient-to-br from-green-50  dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500"
+          className="h-screen p-6 overflow-scroll bg-gradient-to-br from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500"
         >
           <button
             onClick={() => setIsModalOpen(false)}
