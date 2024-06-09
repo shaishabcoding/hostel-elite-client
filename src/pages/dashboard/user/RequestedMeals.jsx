@@ -83,8 +83,8 @@ const RequestedMeals = () => {
                       {idx + 1}
                     </th>
                     <td>{title}</td>
-                    <td>{likes}</td>
-                    <td>{reviews.length}</td>
+                    <td>{likes || 0}</td>
+                    <td>{reviews?.length || 0}</td>
                     <td>{status}</td>
                     <td className="flex gap-2 w-fit">
                       <button
