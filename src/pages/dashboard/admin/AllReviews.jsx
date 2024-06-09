@@ -1,16 +1,33 @@
 import Swal from "sweetalert2";
-import useMeals from "../../../hooks/useMeals";
 import usePrivateClient from "../../../hooks/usePrivateClient";
 import Loading from "../../../components/Loading";
 import { Link } from "react-router-dom";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { TbListDetails } from "react-icons/tb";
 import { useState } from "react";
+import useAuth from "../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const AllReviews = () => {
-  const [meals, refetch, loading] = useMeals();
+  const [page, setPage] = useState(0);
+  const { loading } = useAuth();
+
   const privateClient = usePrivateClient();
   const [deleteLoading, setDeleteLoading] = useState([false, ""]);
+  const {
+    data: meals,
+    refetch,
+    isFetching,
+    isPreviousData,
+  } = useQuery({
+    queryKey: ["meals", page],
+    enabled: !loading,
+    queryFn: async () => {
+      const res = await privateClient.get(`/meals/admin?offset=${page * 10}`);
+      return res.data;
+    },
+    keepPreviousData: false,
+  });
 
   const handleDelete = (id) => {
     setDeleteLoading([true, id]);
@@ -56,21 +73,21 @@ const AllReviews = () => {
             </tr>
           </thead>
           <tbody>
-            {!loading && meals?.length < 1 && (
+            {!isFetching && meals?.meals?.length < 1 && (
               <tr>
                 <td colSpan={5} className="text-center text-error">
                   No Review Data found.
                 </td>
               </tr>
             )}
-            {loading ? (
+            {isFetching ? (
               <tr>
                 <td colSpan={6}>
                   <Loading className="my-0" />
                 </td>
               </tr>
             ) : (
-              meals?.map((meal, idx) => {
+              meals?.meals?.map((meal, idx) => {
                 const { _id, title, likes, reviews } = meal;
                 return (
                   <tr
@@ -111,6 +128,46 @@ const AllReviews = () => {
             )}
           </tbody>
         </table>
+      </div>
+      <div className="mx-auto w-fit my-6">
+        <div className="join">
+          <button
+            onClick={() => setPage((old) => Math.max(old - 1, 0))}
+            disabled={page === 0}
+            className="join-item btn btn-sm md:btn-md"
+          >
+            «
+          </button>
+          {Array.from({ length: Math.ceil(meals?.mealsCount / 10) }).map(
+            (_, idx) => (
+              <button
+                className={`join-item btn btn-sm md:btn-md ${
+                  page === idx && "bg-info border-info"
+                }`}
+                key={idx}
+                onClick={() => setPage(idx)}
+              >
+                {idx + 1}
+              </button>
+            )
+          )}
+          <button
+            onClick={() => {
+              if (
+                !isPreviousData &&
+                page < Math.ceil(meals?.mealsCount / 10) - 1
+              ) {
+                setPage((old) => old + 1);
+              }
+            }}
+            disabled={
+              isPreviousData || page >= Math.ceil(meals?.mealsCount / 10) - 1
+            }
+            className="join-item btn btn-sm md:btn-md"
+          >
+            »
+          </button>
+        </div>
       </div>
     </div>
   );
