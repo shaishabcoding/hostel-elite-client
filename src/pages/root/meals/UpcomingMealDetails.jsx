@@ -60,7 +60,9 @@ const UpcomingMealDetails = () => {
         />
         <div className="flex-1">
           <div className="p-3 flex-1 pb-5 dark:bg-gray-600 dark:text-white grow h-full flex flex-col">
-            <h2 className="text-2xl font-semibold">{title}</h2>
+            <h2 className="text-2xl md:text-4xl md:mb-4 font-semibold">
+              {title}
+            </h2>
             <div className="flex flex-col gap-2 mt-3 grow">
               <p>{description}</p>
               <p>
