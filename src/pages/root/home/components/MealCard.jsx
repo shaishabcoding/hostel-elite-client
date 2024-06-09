@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 const MealCard = ({ meal, url }) => {
   const { title, image, rating, price, _id, category } = meal;
   return (
-    <div className="rounded-lg h-full overflow-hidden flex flex-col border border-gray-200 shadow-sm bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
-      <div className="relative border-b border-gray-400">
+    <div className="rounded-lg h-full overflow-hidden flex flex-col border-2 border-gray-400 shadow-sm bg-gradient-to-bl from-green-50 dark:from-gray-700 via-pink-50 dark:via-gray-800 to-sky-50 dark:to-gray-700 dark:text-white dark:border-gray-500">
+      <div className="relative border-b-2 border-gray-400">
         <img src={image} className="w-full aspect-video bg-gray-200" />
         <div className="absolute top-3 right-3 flex gap-2">
           <p className="bg-green-200 rounded-md px-2 text-sm border border-gray-400">
