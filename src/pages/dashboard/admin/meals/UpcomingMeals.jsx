@@ -27,6 +27,7 @@ const UpcomingMeals = () => {
   const [rating, setRating] = useState(3);
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState([false, ""]);
+  const [publishLoading, setPublishLoading] = useState([false, ""]);
 
   const {
     register,
@@ -91,6 +92,34 @@ const UpcomingMeals = () => {
           }
         });
       } else setDeleteLoading([false, id]);
+    });
+  };
+
+  const handlePublish = (id) => {
+    setPublishLoading([true, id]);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Publish it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        privateClient.put(`/meals/upcoming/${id}/publish`).then(({ data }) => {
+          if (data.insertedId) {
+            refetch();
+            setPublishLoading([false, id]);
+            Swal.fire({
+              title: "Success",
+              text: "Meal Publish successfully!",
+              icon: "success",
+              confirmButtonText: "Done",
+            });
+          }
+        });
+      } else setPublishLoading([false, id]);
     });
   };
 
@@ -186,10 +215,18 @@ const UpcomingMeals = () => {
                     <td>{username}</td>
                     <td className="flex gap-2 w-fit">
                       <button
+                        disabled={
+                          publishLoading[0] && publishLoading[1] === _id
+                        }
+                        onClick={() => handlePublish(_id)}
                         title="publish"
                         className="btn text-white btn-info btn-xs md:btn-sm dark:bg-gray-700 dark:text-white dark:border-gray-400"
                       >
-                        <GrCloudUpload />
+                        {publishLoading[0] && publishLoading[1] === _id ? (
+                          <span className="loading loading-spinner loading-sm"></span>
+                        ) : (
+                          <GrCloudUpload />
+                        )}
                       </button>
                       <button
                         disabled={deleteLoading[0] && deleteLoading[1] === _id}
