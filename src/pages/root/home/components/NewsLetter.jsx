@@ -3,7 +3,7 @@ const NewsLetter = () => {
     <div
       className="w-full bg-cover bg-no-repeat text-center bg-center lg:rounded-lg overflow-hidden"
       style={{
-        backgroundImage: "url('https://i.ibb.co/FYnhyD0/banner.jpg')",
+        backgroundImage: "url('https://i.ibb.co/PCJB0Fv/banner.jpg')",
       }}
     >
       <div className="bg-black/30 w-full flex flex-col items-center justify-center h-full text-white py-20 px-10">
