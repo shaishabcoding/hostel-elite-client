@@ -2,7 +2,7 @@
 
 ## Description
 
-Hostel Elite is a Hostel Management system designed for university administrators to efficiently manage student meals and food reviews.
+Hostel Elite is a Hostel Management system designed for university administrators to efficiently manage student meals and food reviews. [Server repo](https://github.com/shaishabcoding/hostel316-server.git)
 
 ![Banner Image](https://i.ibb.co/cry83Dr/banner.png)
 
@@ -82,12 +82,12 @@ Hostel Elite is a Hostel Management system designed for university administrator
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/programming-hero-web-course1/b9a12-client-side-shaishabcoding.git
+   git clone https://github.com/shaishabcoding/hostel-elite-client.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd b9a12-client-side-shaishabcoding
+   cd hostel-elite-client
    ```
 3. Install dependencies:
    ```bash
@@ -152,7 +152,3 @@ We welcome contributions to Hostel Elite! Please fork the repository and create 
 ## License
 
 This project is licensed under the MIT License.
-
-```
-This updated `README.md` includes the new feature for a payment system, ensuring a comprehensive overview of what your project offers.
-```
